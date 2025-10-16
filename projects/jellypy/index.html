@@ -3,41 +3,148 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Jellypy — Jellyfin plugin for Sonarr & Radarr integration</title>
-    <meta name="description" content="Jellypy: an event-driven Jellyfin plugin that integrates with Sonarr and Radarr for automated media management. C# / .NET 8 / Docker.">
+    <title>JellyPy — Jellyfin Plugin for Sonarr & Radarr</title>
+    <meta name="description" content="JellyPy: Jellyfin plugin that automatically manages your Sonarr and Radarr based on what you watch.">
+    <meta property="og:title" content="JellyPy — Jellyfin Plugin for Sonarr & Radarr">
+    <meta property="og:description" content="Jellyfin plugin that automatically manages your Sonarr and Radarr based on what you watch.">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary">
     <link rel="canonical" href="https://caleb-venner.github.io/projects/jellypy/">
-    <meta property="og:title" content="Jellypy — Jellyfin plugin for Sonarr & Radarr">
-    <meta property="og:description" content="Event-driven plugin for Jellyfin integrating Sonarr and Radarr. C# / .NET 8 / Docker.">
-    <meta property="og:image" content="/assets/projects/jellypy.png">
     <link rel="stylesheet" href="/assets/style.css">
+    <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
   </head>
   <body>
+    <header class="site-header">
+      <div class="container">
+        <a href="/" style="color: var(--text); text-decoration: none; display: inline-block; margin-bottom: 20px;">← Back</a>
+        <h1 style="margin: 0; font-size: 2.25rem;">JellyPy</h1>
+        <p class="tagline">Jellyfin plugin for media management automation</p>
+      </div>
+    </header>
+
     <main class="container">
-      <article class="card">
-        <h1>Jellypy — Jellyfin plugin for Sonarr & Radarr</h1>
-        <p class="muted">Event-driven plugin for Jellyfin integrating with Sonarr and Radarr. Built in C# (.NET 8) and containerised with Docker.</p>
-        <img src="/assets/projects/jellypy.png" alt="Jellypy integration UI placeholder" style="max-width:100%;border-radius:8px;margin:12px 0">
+      <section class="card">
+        <h2>About</h2>
+        <p>JellyPy automatically keeps your Sonarr and Radarr in sync with what you're actually watching in Jellyfin. Stop manually managing your media library. Watch an episode? It's automatically monitored. Finish a movie? It's automatically removed from your watchlist.</p>
+        <p><strong>License:</strong> GPLv3 | <strong>Requirements:</strong> Jellyfin 10.10+, .NET 8.0</p>
 
-        <h2>What it does</h2>
-        <p>Jellypy listens for media events from Jellyfin and performs integration tasks with self-hosted media managers such as Sonarr and Radarr. Typical uses are automatic tagging, library refresh and notifying downstream managers when media is available.</p>
+       <div class="features">
+          <div class="feature">
+            <h3>Sonarr Integration</h3>
+            <ul style="margin: 8px 0; padding-left: 20px;">
+              <li>Automatically monitor next N episodes after watching</li>
+              <li>Smart file detection (skip re-downloads)</li>
+              <li>Season-only monitoring option</li>
+              <li>Dynamic buffer for unwatched episodes</li>
+              <li>Auto-search for newly monitored episodes</li>
+            </ul>
+          </div>
+          
+          <div class="feature">
+            <h3>Radarr Integration</h3>
+            <ul style="margin: 8px 0; padding-left: 20px;">
+              <li>Auto-unmonitor after watching (configurable %)</li>
+              <li>Quality target checking</li>
+              <li>Prevent unmonitoring upgradeable movies</li>
+            </ul>
+          </div>
+          
+          <div class="feature">
+            <h3>Custom Script Execution</h3>
+            <ul style="margin: 8px 0; padding-left: 20px;">
+              <li>Run custom Python scripts on Jellyfin events</li>
+              <li>AES-256 encrypted API keys</li>
+              <li>Server-bound encryption (survives OS changes)</li>
+              <li>Built-in connection testing</li>
+            </ul>
+          </div>
+        </div>
+        <nav class="nav" aria-label="Primary navigation">
+          <a href="https://github.com/caleb-venner/jellypy" target="_blank" rel="noopener">GitHub Repository</a>
+          <a href="https://github.com/caleb-venner/jellypy/issues" target="_blank" rel="noopener">Report Issues</a>
+          <a href="https://jellyfin.org/" target="_blank" rel="noopener">Jellyfin Project</a></li>
+        </nav>
+      </section>
 
-        <h2>Quick integration example</h2>
-        <p>Example webhook payload (pseudo):</p>
-        <pre><code>curl -X POST https://your-jellypy.example/api/webhook \
-  -H "Content-Type: application/json" \
-  -d '{"event":"downloadComplete","source":"sonarr","title":"My.Show.S01E02"}'
-        </code></pre>
-
+      <section class="card">
         <h2>Installation</h2>
+        
+        <h3>Easy Way (Recommended)</h3>
         <ol>
-          <li>Clone <a href="https://github.com/caleb-venner/jellypy">the repository</a>.</li>
-          <li>Build with .NET 8 and optionally containerise with Docker.</li>
-          <li>Configure the webhook endpoint in Sonarr/Radarr to notify Jellypy on completed downloads.</li>
+          <li>Jellyfin Dashboard → Plugins → Repositories</li>
+          <li>Add: <code style="background: #f3f4f6; padding: 2px 6px; border-radius: 3px;">https://raw.githubusercontent.com/caleb-venner/jellypy/main/manifest.json</code></li>
+          <li>Catalog → Search "JellyPy"</li>
+          <li>Install → Restart Jellyfin</li>
         </ol>
+        
+        <h3>Manual Installation</h3>
+        <p>Download the latest <code style="background: #f3f4f6; padding: 2px 6px; border-radius: 3px;">Jellyfin.Plugin.JellyPy.dll</code> from <a href="https://github.com/caleb-venner/jellypy/releases">Releases</a> and copy to your plugins directory:</p>
+        <ul>
+          <li><strong>Linux:</strong> <code style="background: #f3f4f6; padding: 2px 6px; border-radius: 3px;">/var/lib/jellyfin/plugins/Jellypy/</code></li>
+          <li><strong>Windows:</strong> <code style="background: #f3f4f6; padding: 2px 6px; border-radius: 3px;">C:\ProgramData\Jellyfin\Server\plugins\Jellypy\</code></li>
+          <li><strong>Docker:</strong> <code style="background: #f3f4f6; padding: 2px 6px; border-radius: 3px;">/config/data/plugins/Jellypy/</code></li>
+        </ul>
+      </section>
 
-        <p>See the <a href="https://github.com/caleb-venner/jellypy" target="_blank" rel="noopener">GitHub repo</a> for source, releases and detailed configuration examples.</p>
-        <p><a href="/">Back to home</a></p>
-      </article>
+      <section class="card">
+        <h2>Configuration</h2>
+        <p>JellyPy integrates into your Jellyfin dashboard. Configure:</p>
+        <ul>
+          <li>Sonarr API endpoint and key</li>
+          <li>Radarr API endpoint and key</li>
+          <li>Episode monitoring buffer</li>
+          <li>Movie watch percentage threshold</li>
+          <li>Custom event scripts (optional)</li>
+        </ul>
+        <p>API keys are encrypted with AES-256 using your Jellyfin server's unique key—they're safe to store.</p>
+ 
+        <h2>Screenshots</h2>
+        <div class="gallery">
+          <div>
+            <h3 style="margin-top: 0; margin-bottom: 8px;">Global</h3>
+            <img src="/assets/projects/jellypy/jellypy-config-global.png" alt="Global configuration" style="max-width: 100%; height: auto; border-radius: 6px; margin-bottom: 20px;">
+          </div>
+          <div>
+            <h3 style="margin-top: 0; margin-bottom: 8px;">Sonarr</h3>
+            <img src="/assets/projects/jellypy/jellypy-config-sonarr-1.png" alt="Sonarr settings 1" style="max-width: 100%; height: auto; border-radius: 6px; margin-bottom: -15px;">
+            <img src="/assets/projects/jellypy/jellypy-config-sonarr-2.png" alt="Sonarr settings 2" style="max-width: 100%; height: auto; border-radius: 6px; margin-bottom: 20px;">
+          </div>
+          <div>
+            <h3 style="margin-top: 0; margin-bottom: 8px;">Radarr</h3>
+            <img src="/assets/projects/jellypy/jellypy-config-radarr.png" alt="Radarr settings" style="max-width: 100%; height: auto; border-radius: 6px; margin-bottom: 12px;">
+          </div>
+        </div>
+      </section>
+
+
     </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <p>&copy; 2025 Caleb Venner</p>
+      </div>
+    </footer>
+
+    <style>
+      .features {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 16px;
+        margin: 16px 0;
+      }
+      .feature {
+        padding: 16px;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        background: #f9fafb;
+      }
+      .feature h3 {
+        margin-top: 0;
+        margin-bottom: 8px;
+      }
+      .feature ul {
+        font-size: 0.95rem;
+      }
+    </style>
   </body>
 </html>

@@ -50,8 +50,6 @@
         <h1 class="name">Caleb Venner</h1>
         <p class="tagline">Software developer — web apps, tooling, and clear UX</p>
         <nav class="nav" aria-label="Primary navigation">
-          <a href="#projects">Projects</a>
-          <a href="#about">About</a>
           <a href="https://github.com/caleb-venner" target="_blank" rel="noopener">GitHub</a>
           <a href="https://www.linkedin.com/in/your-profile" target="_blank" rel="noopener">LinkedIn</a>
         </nav>
@@ -60,28 +58,23 @@
 
     <main class="container">
       <section id="projects" class="card">
-        <h2>Selected projects</h2>
-        <ul class="projects">
-          <li>
-            <a href="https://github.com/caleb-venner/jellypy" target="_blank" rel="noopener">Jellypy</a>
-            <p class="muted">Event-driven plugin for the Jellyfin media server integrating with self-hosted media management services. Built in C# on .NET 8 and containerised with Docker. Practised iterative delivery with Git, code reviews and tests.</p>
-            <p class="muted">Tech: C# · .NET 8 · Docker</p>
-          </li>
-          <li>
-            <a href="https://github.com/caleb-venner/aquarium-device-manager" target="_blank" rel="noopener">Aquarium Device Manager</a>
-            <p class="muted">Full-stack application to interface with and control hardware peripherals (sensors, pumps) using Bluetooth LE. Backend in Python (FastAPI) with a TypeScript frontend; service containerised using Docker.</p>
-            <p class="muted">Tech: Python · FastAPI · TypeScript · Docker · BLE</p>
-          </li>
-          <li>
-            <a href="/projects/" target="_blank" rel="noopener">More projects</a>
-            <p class="muted">Create a `/projects/index.html` to list more projects and detailed write-ups.</p>
-          </li>
-        </ul>
+        <h2>Projects</h2>
+        <p class="muted">Explore my projects and detailed setup guides, including self-hosting instructions and integration examples.</p>
+        <div class="project-grid">
+          <article class="project">
+            <h3><a href="/projects/jellypy/">JellyPy</a></h3>
+            <p class="muted small">Jellyfin plugin — Sonarr & Radarr integration · C# · Docker</p>
+          </article>
+          <article class="project">
+            <h3><a href="/projects/aquable/">AquaBle</a></h3>
+            <p class="muted small">BLE device controller — FastAPI · TypeScript · Docker</p>
+          </article>
+  </div>
       </section>
 
       <section id="about" class="card">
         <h2>About</h2>
-        <p>Third-year Software Engineering student at the University of Technology Sydney with a High Distinction average and a strong focus on Mathematics. I build web applications and data-driven tools, and I'm particularly interested in containerisation and reliable developer experience.</p>
+        <p>Third-year Software Engineering student at the University of Technology Sydney with a strong focus on Mathematics. In my spare time I build web applications and data-driven tools, and I'm particularly interested in containerisation and reliable developer experience.</p>
         <p class="muted">Skills: Python · Java · C++ · C · C# · JavaScript · TypeScript · Docker · Data-driven applications</p>
       </section>
     </main>

@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Aquable — BLE Chihiros Device Manager</title>
+    <meta name="description" content="Aquable: Control your Chihiros aquarium devices via Bluetooth. Home Assistant, Docker, or standalone.">
+    <meta property="og:title" content="Aquable — BLE Chihiros Device Manager">
+    <meta property="og:description" content="Control your Chihiros aquarium devices via Bluetooth. Home Assistant, Docker, or standalone.">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary">
+    <link rel="canonical" href="https://caleb-venner.github.io/projects/aquable/">
+    <link rel="stylesheet" href="/assets/style.css">
+    <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container">
+        <a href="/" style="color: var(--text); text-decoration: none; display: inline-block; margin-bottom: 20px;">← Back</a>
+        <h1 style="margin: 0; font-size: 2.25rem;">Aquable</h1>
+        <p class="tagline">Control your Chihiros devices via Bluetooth</p>
+      </div>
+    </header>
+
+    <main class="container">
+      <section class="card">
+        <h2>About</h2>
+        <p>Aquable is a BLE controller for Chihiros aquarium devices. Whether you're running Home Assistant, Docker, or a standalone Python service, you can manage your LED lights, dosing pumps, and terrarium gear from one place.</p>
+        <p><strong>Status:</strong> In active development at an early stage. Expect new features and refinements soon.</p>
+
+        <nav class="nav" aria-label="Primary navigation">
+          <a href="https://github.com/caleb-venner/aquable">GitHub Repository</a>
+          <a href="https://github.com/caleb-venner/aquable/issues">Report Issues</a>
+       </nav>
+        <h2>Supported Devices</h2>
+        <ul>
+          <li>Chihiros 4 Head Dosing Pump</li>
+          <li>Chihiros WRGB II</li>
+          <li>Chihiros WRGB II Pro</li>
+          <li>Chihiros LED A2</li>
+          <li>Chihiros Tiny Terrarium Egg</li>
+          <li>Chihiros C II (RGB, White)</li>
+          <li>Chihiros Universal WRGB</li>
+          <li>Chihiros Z Light TINY</li>
+          <li>+ other LED models (untested)</li>
+        </ul>
+      <p class="muted" style="font-size: 0.9rem; margin-top: 20px;">Built on the open-source <a href="https://github.com/TheMicDiet/chihiros-led-control target="_blank" rel="noopener"">Chihiros LED Control</a> project. Licensed under MIT.</p>
+      </section>
+
+      <section class="card">
+        <h2>How to Run It</h2>
+        <p>Pick the deployment method that works best for you:</p>
+        
+        <div class="deployment-options">
+          <div class="option">
+            <h3>Home Assistant Add-on (coming soon)</h3>
+            <p>Install from the HACS add-on store. Easy, integrated, recommended.</p>
+            <p class="muted">Auto-configured Bluetooth, persistent storage, dashboard integration</p>
+          </div>
+          
+          <div class="option">
+            <h3>Docker (coming soon)</h3>
+            <p>Multi-architecture support (amd64, arm64, armv7). Perfect for self-hosting or Unraid.</p>
+            <p class="muted">Health monitoring, auto-restart, volume persistence</p>
+          </div>
+          
+          <div class="option">
+            <h3>Python Service</h3>
+            <p>Direct install for development, advanced users, or Raspberry Pi.</p>
+            <p class="muted">Native performance, full control, ideal for tinkering</p>
+          </div>
+        </div>
+        
+        <h2>Screenshots</h2>
+        <div class="gallery">
+          <img src="/assets/projects/aquable/aquable-dashboard-overview.png" alt="Dashboard" style="max-width: 100%; height: auto; border-radius: 6px; margin-bottom: 12px;">
+          <img src="/assets/projects/aquable/aquable-dashboard-overview-dark.png" alt="Dashboard Darkmode" style="max-width: 100%; height: auto; border-radius: 6px; margin-bottom: 12px;">
+          <img src="/assets/projects/aquable/aquable-settings-doser-head.png" alt="Doser head settings" style="max-width: 100%; height: auto; border-radius: 6px; margin-bottom: 12px;">
+          <div class="side-by-side">
+            <img src="/assets/projects/aquable/aquable-settings-light-auto.png" alt="Light settings - Auto" style="max-width: 100%; height: auto; border-radius: 6px;">
+            <img src="/assets/projects/aquable/aquable-settings-light-manual.png" alt="Light settings - Manual" style="max-width: 100%; height: auto; border-radius: 6px;">
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <p>&copy; 2025 Caleb Venner</p>
+      </div>
+    </footer>
+
+    <style>
+      .deployment-options {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 16px;
+        margin: 16px 0;
+      }
+      .option {
+        padding: 16px;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        background: #f9fafb;
+      }
+      .option h3 {
+        margin-top: 0;
+        margin-bottom: 8px;
+      }
+      .option p {
+        margin: 6px 0;
+        font-size: 0.95rem;
+      }
+      .side-by-side {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        margin-bottom: 12px;
+      }
+      @media (max-width: 768px) {
+        .side-by-side {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </body>
+</html>
