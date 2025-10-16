@@ -8,7 +8,6 @@
     <meta property="og:title" content="JellyPy — Jellyfin Plugin for Sonarr & Radarr">
     <meta property="og:description" content="Jellyfin plugin that automatically manages your Sonarr and Radarr based on what you watch.">
     <meta property="og:type" content="website">
-    <meta name="twitter:card" content="summary">
     <link rel="canonical" href="https://caleb-venner.github.io/projects/jellypy/">
   <link rel="stylesheet" href="/assets/style.css?v=20251016-1">
     <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
@@ -16,15 +15,18 @@
   <body>
     <header class="site-header">
       <div class="container">
-        <a href="/" style="color: var(--text); text-decoration: none; display: inline-block; margin-bottom: 20px;">← Back</a>
+  <a class="back-link" href="/">← Back</a>
         <h1 style="margin: 0; font-size: 2.25rem;">JellyPy</h1>
         <p class="tagline">Jellyfin plugin for media management automation</p>
       </div>
     </header>
 
     <main class="container">
+
       <section class="card">
-        <h2>About</h2>
+        <div class="project-banner">
+          <img src="/assets/projects/jellypy/jellypy-banner-purple.png" alt="JellyPy banner" style="width:100%;height:auto;border-radius:8px;margin-bottom:0px;">
+        </div>
         <p>JellyPy automatically keeps your Sonarr and Radarr in sync with what you're actually watching in Jellyfin. Stop manually managing your media library. Watch an episode? It's automatically monitored. Finish a movie? It's automatically removed from your watchlist.</p>
         <p><strong>License:</strong> GPLv3 | <strong>Requirements:</strong> Jellyfin 10.10+, .NET 8.0</p>
 

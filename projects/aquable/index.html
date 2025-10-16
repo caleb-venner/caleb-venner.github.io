@@ -8,7 +8,6 @@
     <meta property="og:title" content="Aquable — BLE Chihiros Device Manager">
     <meta property="og:description" content="Control your Chihiros aquarium devices via Bluetooth. Home Assistant, Docker, or standalone.">
     <meta property="og:type" content="website">
-    <meta name="twitter:card" content="summary">
     <link rel="canonical" href="https://caleb-venner.github.io/projects/aquable/">
   <link rel="stylesheet" href="/assets/style.css?v=20251016-1">
     <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
@@ -16,15 +15,18 @@
   <body>
     <header class="site-header">
       <div class="container">
-        <a href="/" style="color: var(--text); text-decoration: none; display: inline-block; margin-bottom: 20px;">← Back</a>
+  <a class="back-link" href="/">← Back</a>
         <h1 style="margin: 0; font-size: 2.25rem;">Aquable</h1>
         <p class="tagline">Control your Chihiros devices via Bluetooth</p>
       </div>
     </header>
 
     <main class="container">
+ 
       <section class="card">
-        <h2>About</h2>
+        <div class="project-banner">
+          <img src="/assets/projects/aquable/aquable-banner.png" alt="Aquable banner" style="width:100%;height:auto;border-radius:8px;margin-bottom:0px;">
+        </div>
         <p>Aquable is a BLE controller for Chihiros aquarium devices. Whether you're running Home Assistant, Docker, or a standalone Python service, you can manage your LED lights, dosing pumps, and terrarium gear from one place.</p>
         <p><strong>Status:</strong> In active development at an early stage. Expect new features and refinements soon.</p>
 
@@ -44,7 +46,7 @@
           <li>Chihiros Z Light TINY</li>
           <li>+ other LED models (untested)</li>
         </ul>
-      <p class="muted" style="font-size: 0.9rem; margin-top: 20px;">Built on the open-source <a href="https://github.com/TheMicDiet/chihiros-led-control target="_blank" rel="noopener"">Chihiros LED Control</a> project. Licensed under MIT.</p>
+  <p class="muted" style="font-size: 0.9rem; margin-top: 20px;">Built on the open-source <a href="https://github.com/TheMicDiet/chihiros-led-control" target="_blank" rel="noopener">Chihiros LED Control</a> project. Licensed under MIT.</p>
       </section>
 
       <section class="card">
