@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Jellypy — Jellyfin plugin for Sonarr & Radarr integration</title>
+    <meta name="description" content="Jellypy: an event-driven Jellyfin plugin that integrates with Sonarr and Radarr for automated media management. C# / .NET 8 / Docker.">
+    <link rel="canonical" href="https://caleb-venner.github.io/projects/jellypy/">
+    <meta property="og:title" content="Jellypy — Jellyfin plugin for Sonarr & Radarr">
+    <meta property="og:description" content="Event-driven plugin for Jellyfin integrating Sonarr and Radarr. C# / .NET 8 / Docker.">
+    <meta property="og:image" content="/assets/projects/jellypy.png">
+    <link rel="stylesheet" href="/assets/style.css">
+  </head>
+  <body>
+    <main class="container">
+      <article class="card">
+        <h1>Jellypy — Jellyfin plugin for Sonarr & Radarr</h1>
+        <p class="muted">Event-driven plugin for Jellyfin integrating with Sonarr and Radarr. Built in C# (.NET 8) and containerised with Docker.</p>
+        <img src="/assets/projects/jellypy.png" alt="Jellypy integration UI placeholder" style="max-width:100%;border-radius:8px;margin:12px 0">
+
+        <h2>What it does</h2>
+        <p>Jellypy listens for media events from Jellyfin and performs integration tasks with self-hosted media managers such as Sonarr and Radarr. Typical uses are automatic tagging, library refresh and notifying downstream managers when media is available.</p>
+
+        <h2>Quick integration example</h2>
+        <p>Example webhook payload (pseudo):</p>
+        <pre><code>curl -X POST https://your-jellypy.example/api/webhook \
+  -H "Content-Type: application/json" \
+  -d '{"event":"downloadComplete","source":"sonarr","title":"My.Show.S01E02"}'
+        </code></pre>
+
+        <h2>Installation</h2>
+        <ol>
+          <li>Clone <a href="https://github.com/caleb-venner/jellypy">the repository</a>.</li>
+          <li>Build with .NET 8 and optionally containerise with Docker.</li>
+          <li>Configure the webhook endpoint in Sonarr/Radarr to notify Jellypy on completed downloads.</li>
+        </ol>
+
+        <p>See the <a href="https://github.com/caleb-venner/jellypy" target="_blank" rel="noopener">GitHub repo</a> for source, releases and detailed configuration examples.</p>
+        <p><a href="/">Back to home</a></p>
+      </article>
+    </main>
+  </body>
+</html>

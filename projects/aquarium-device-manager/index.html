@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Aquarium Device Manager — BLE controller for Chihiros & hardware</title>
+    <meta name="description" content="Aquarium Device Manager: full-stack app to control aquarium hardware (Chihiros, pumps, sensors) via Bluetooth LE. FastAPI backend, TypeScript frontend, Docker.">
+    <link rel="canonical" href="https://caleb-venner.github.io/projects/aquarium-device-manager/">
+    <meta property="og:title" content="Aquarium Device Manager — BLE controller for Chihiros & hardware">
+    <meta property="og:description" content="Control aquarium hardware via Bluetooth LE; integrates with Home Assistant.">
+    <meta property="og:image" content="/assets/projects/aquarium.png">
+    <link rel="stylesheet" href="/assets/style.css">
+  </head>
+  <body>
+    <main class="container">
+      <article class="card">
+        <h1>Aquarium Device Manager</h1>
+        <p class="muted">Full-stack application to interface with aquarium hardware (sensors, pumps, Chihiros controllers) via Bluetooth LE. Backend: Python (FastAPI). Frontend: TypeScript. Containerised with Docker.</p>
+        <img src="/assets/projects/aquarium.png" alt="Aquarium Device Manager UI placeholder" style="max-width:100%;border-radius:8px;margin:12px 0">
+
+        <h2>What it does</h2>
+        <p>Provides an API and UI to monitor and control aquarium devices. Designed to integrate with Home Assistant or other home automation platforms.</p>
+
+        <h2>Home Assistant example (REST)</h2>
+        <pre><code># Example: use REST sensor in Home Assistant to fetch sensor data
+rest:
+  - resource: http://your-aquarium.example/api/sensors
+    sensor:
+      - name: "Chihiros Water Temp"
+        value_template: "{{ value_json.temperature }}"
+        </code></pre>
+
+        <h2>Installation</h2>
+        <ol>
+          <li>See the <a href="https://github.com/caleb-venner/aquarium-device-manager">GitHub repo</a> for source and instructions.</li>
+          <li>Run the FastAPI service, configure BLE permissions, and optionally run with Docker for ease of deployment.</li>
+        </ol>
+
+        <p><a href="/">Back to home</a></p>
+      </article>
+    </main>
+  </body>
+</html>

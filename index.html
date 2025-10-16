@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Caleb Venner — Software developer</title>
+    <meta name="description" content="Portfolio of Caleb Venner — software developer focused on web apps, tooling and UX.">
+    <meta property="og:title" content="Caleb Venner — Software developer">
+    <meta property="og:description" content="Portfolio of Caleb Venner — software developer focused on web apps, tooling and UX.">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary">
+    <link rel="canonical" href="https://caleb-venner.github.io/">
+    <meta name="keywords" content="Jellyfin, Sonarr, Radarr, Jellypy, aquarium, Chihiros, BLE, Home Assistant, FastAPI, Docker, .NET">
+    <!-- JSON-LD structured data for the site and featured projects -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Caleb Venner",
+      "url": "https://caleb-venner.github.io/",
+      "jobTitle": "Software Developer",
+      "sameAs": [
+        "https://github.com/caleb-venner"
+      ],
+      "knowsAbout": ["Jellyfin","Sonarr","Radarr","Bluetooth LE","Docker","FastAPI",".NET"],
+      "hasPart": [
+        {
+          "@type": "SoftwareApplication",
+          "name": "Jellypy",
+          "url": "https://github.com/caleb-venner/jellypy",
+          "description": "Event-driven plugin for Jellyfin integrating with Sonarr and Radarr.",
+          "programmingLanguage": "C#"
+        },
+        {
+          "@type": "SoftwareApplication",
+          "name": "Aquarium Device Manager",
+          "url": "https://github.com/caleb-venner/aquarium-device-manager",
+          "description": "Full-stack application for controlling aquarium hardware via Bluetooth LE; integrates with home automation.",
+          "programmingLanguage": "Python"
+        }
+      ]
+    }
+    </script>
+    <link rel="stylesheet" href="/assets/style.css">
+    <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container">
+        <h1 class="name">Caleb Venner</h1>
+        <p class="tagline">Software developer — web apps, tooling, and clear UX</p>
+        <nav class="nav" aria-label="Primary navigation">
+          <a href="#projects">Projects</a>
+          <a href="#about">About</a>
+          <a href="#contact">Contact</a>
+        </nav>
+        <p class="social muted">
+          <a href="https://github.com/your-username" target="_blank" rel="noopener">GitHub</a>
+          · <a href="https://www.linkedin.com/in/your-profile" target="_blank" rel="noopener">LinkedIn</a>
+          · <a href="https://twitter.com/your-handle" target="_blank" rel="noopener">Twitter</a>
+        </p>
+      </div>
+    </header>
+
+    <main class="container">
+      <section id="projects" class="card">
+        <h2>Selected projects</h2>
+        <ul class="projects">
+          <li>
+            <a href="https://github.com/caleb-venner/jellypy" target="_blank" rel="noopener">Jellypy</a>
+            <p class="muted">Event-driven plugin for the Jellyfin media server integrating with self-hosted media management services. Built in C# on .NET 8 and containerised with Docker. Practised iterative delivery with Git, code reviews and tests.</p>
+            <p class="muted">Tech: C# · .NET 8 · Docker</p>
+          </li>
+          <li>
+            <a href="https://github.com/caleb-venner/aquarium-device-manager" target="_blank" rel="noopener">Aquarium Device Manager</a>
+            <p class="muted">Full-stack application to interface with and control hardware peripherals (sensors, pumps) using Bluetooth LE. Backend in Python (FastAPI) with a TypeScript frontend; service containerised using Docker.</p>
+            <p class="muted">Tech: Python · FastAPI · TypeScript · Docker · BLE</p>
+          </li>
+          <li>
+            <a href="/projects/" target="_blank" rel="noopener">More projects</a>
+            <p class="muted">Create a `/projects/index.html` to list more projects and detailed write-ups.</p>
+          </li>
+        </ul>
+      </section>
+
+      <section id="about" class="card">
+        <h2>About</h2>
+        <p>Third-year Software Engineering student at the University of Technology Sydney with a High Distinction average and a strong focus on Mathematics. I build web applications and data-driven tools, and I’m particularly interested in containerisation and reliable developer experience.</p>
+        <p class="muted">Skills: Python · Java · C++ · C · C# · JavaScript · TypeScript · Docker · Data-driven applications</p>
+      </section>
+
+      <section id="contact" class="card">
+        <h2>Contact</h2>
+        <p>Email: <a href="mailto:hello@example.com">hello@example.com</a></p>
+        <p>If you prefer, link to a contact form or a calendar scheduling page here.</p>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <p>© <span id="year"></span> Caleb Venner — <a href="https://pages.github.com/" target="_blank" rel="noopener">GitHub Pages</a></p>
+      </div>
+    </footer>
+
+    <script>
+      document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
+  </body>
+</html>

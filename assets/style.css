@@ -1,0 +1,31 @@
+:root{
+  --bg:#0f1724;
+  --card:#0b1220;
+  --muted:#9aa4b2;
+  --accent:#6ee7b7;
+  --text:#e6eef6;
+  --max-width:900px;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+  background:linear-gradient(180deg,var(--bg),#071122 60%);
+  color:var(--text);
+  -webkit-font-smoothing:antialiased;
+}
+.container{max-width:var(--max-width);margin:0 auto;padding:28px}
+.site-header{padding:48px 0;text-align:center}
+.name{margin:0;font-size:2.25rem}
+.tagline{color:var(--muted);margin:8px 0 18px}
+.nav a{color:var(--accent);margin:0 8px;text-decoration:none}
+.card{background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(0,0,0,0.03));padding:18px;border-radius:12px;margin-bottom:18px}
+.projects{list-style:none;padding-left:0;margin:0}
+.projects li{padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.03)}
+.muted{color:var(--muted);margin:6px 0}
+.site-footer{padding:20px 0;text-align:center;color:var(--muted)}
+
+@media (min-width:900px){
+  .nav{display:inline-block}
+}

@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# Sitemap reference
+Sitemap: https://caleb-venner.github.io/sitemap.xml
+
+# Crawl-delay can be added if you want to limit requests (not usually necessary for small sites)
+# Crawl-delay: 10
