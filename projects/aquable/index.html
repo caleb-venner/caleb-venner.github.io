@@ -3,10 +3,10 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Aquable — BLE Chihiros Device Manager</title>
-    <meta name="description" content="Aquable: Control your Chihiros aquarium devices via Bluetooth. Home Assistant, Docker, or standalone.">
-    <meta property="og:title" content="Aquable — BLE Chihiros Device Manager">
-    <meta property="og:description" content="Control your Chihiros aquarium devices via Bluetooth. Home Assistant, Docker, or standalone.">
+    <title>AquaBle — Home Assistant Add-on for Chihiros Devices</title>
+    <meta name="description" content="AquaBle: Control your Chihiros aquarium devices directly from Home Assistant. Lightweight add-on with seamless Ingress integration.">
+    <meta property="og:title" content="AquaBle — Home Assistant Add-on for Chihiros Devices">
+    <meta property="og:description" content="Control your Chihiros aquarium devices directly from Home Assistant. Lightweight add-on with seamless Ingress integration.">
     <meta property="og:type" content="website">
     <link rel="canonical" href="https://caleb-venner.github.io/projects/aquable/">
   <link rel="stylesheet" href="/assets/style.css?v=20251016-1">
@@ -16,8 +16,8 @@
     <header class="site-header">
       <div class="container">
   <a class="back-link" href="/">← Back</a>
-        <h1 style="margin: 0; font-size: 2.25rem;">Aquable</h1>
-        <p class="tagline">Control your Chihiros devices via Bluetooth</p>
+        <h1 style="margin: 0; font-size: 2.25rem;">AquaBle</h1>
+        <p class="tagline">Control your Chihiros devices via Home Assistant</p>
       </div>
     </header>
 
@@ -27,8 +27,8 @@
         <div class="project-banner">
           <img src="/assets/projects/aquable/aquable-banner.png" alt="Aquable banner" style="width:100%;height:auto;border-radius:8px;margin-bottom:0px;">
         </div>
-        <p>Aquable is a BLE controller for Chihiros aquarium devices. Whether you're running Home Assistant, Docker, or a standalone Python service, you can manage your LED lights, dosing pumps, and terrarium gear from one place.</p>
-        <p><strong>Status:</strong> In active development at an early stage. Expect new features and refinements soon.</p>
+        <p>AquaBle is a lightweight Home Assistant add-on that gives you control over your Chihiros aquarium devices directly from the Home Assistant interface. Manage your LED lights, dosing pumps, and terrarium gear seamlessly with integrated Ingress support—no port forwarding or complex configuration needed.</p>
+        <p><strong>Status:</strong> In very active development at an early stage. Expect new features and refinements soon.</p>
 
         <nav class="nav" aria-label="Primary navigation">
           <a href="https://github.com/caleb-venner/aquable">GitHub Repository</a>
@@ -36,43 +36,36 @@
        </nav>
         <h2>Supported Devices</h2>
         <ul>
-          <li>Chihiros 4 Head Dosing Pump</li>
-          <li>Chihiros WRGB II</li>
-          <li>Chihiros WRGB II Pro</li>
-          <li>Chihiros LED A2</li>
-          <li>Chihiros Tiny Terrarium Egg</li>
-          <li>Chihiros C II (RGB, White)</li>
-          <li>Chihiros Universal WRGB</li>
-          <li>Chihiros Z Light TINY</li>
-          <li>+ other LED models (untested)</li>
+          <li>Chihiros LED Aquarium Lights</li>
+          <li>Chihiros Dosing Pumps</li>
         </ul>
   <p class="muted" style="font-size: 0.9rem; margin-top: 20px;">Built on the open-source <a href="https://github.com/TheMicDiet/chihiros-led-control" target="_blank" rel="noopener">Chihiros LED Control</a> project. Licensed under MIT.</p>
       </section>
 
       <section class="card">
-        <h2>How to Run It</h2>
-        <p>Pick the deployment method that works best for you:</p>
+        <h2>Installation</h2>
+        <p>AquaBle is distributed as a Home Assistant add-on and is installed directly from a custom repository.</p>
         
-        <div class="deployment-options">
-          <div class="option">
-            <h3>Home Assistant Add-on (coming soon)</h3>
-            <p>Install from the HACS add-on store. Easy, integrated, recommended.</p>
-            <p class="muted">Auto-configured Bluetooth, persistent storage, dashboard integration</p>
-          </div>
-          
-          <div class="option">
-            <h3>Docker (coming soon)</h3>
-            <p>Multi-architecture support (amd64, arm64, armv7). Perfect for self-hosting or Unraid.</p>
-            <p class="muted">Health monitoring, auto-restart, volume persistence</p>
-          </div>
-          
-          <div class="option">
-            <h3>Python Service</h3>
-            <p>Direct install for development, advanced users, or Raspberry Pi.</p>
-            <p class="muted">Native performance, full control, ideal for tinkering</p>
-          </div>
-        </div>
+        <ol>
+          <li>In Home Assistant, go to <strong>Settings → Add-ons & integrations → Add-ons</strong></li>
+          <li>Click the three-dot menu and select <strong>Repositories</strong></li>
+          <li>Add the custom repository: <code>https://github.com/caleb-venner/aquable</code></li>
+          <li>Go to the <strong>Add-ons store</strong> and search for <strong>AquaBle</strong></li>
+          <li>Click <strong>Install</strong> and then <strong>Start</strong></li>
+          <li>Click <strong>OPEN WEB UI</strong> to access the interface via Home Assistant Ingress</li>
+        </ol>
         
+        <h3>Home Assistant Ingress</h3>
+        <p>AquaBle is built for Home Assistant Ingress integration:</p>
+        <ul>
+          <li>Access the web interface directly through the Home Assistant UI</li>
+          <li>No port forwarding or authentication configuration needed</li>
+          <li>Seamless user experience within Home Assistant</li>
+          <li>Works perfectly on Home Assistant mobile apps</li>
+        </ul>
+      </section>
+
+      <section class="card">
         <h2>Screenshots</h2>
         <div class="gallery">
           <img src="/assets/projects/aquable/aquable-dashboard-overview.png" alt="Dashboard" style="max-width: 100%; height: auto; border-radius: 6px; margin-bottom: 12px;">
