@@ -28,7 +28,7 @@
           <img src="/assets/projects/jellypy/jellypy-banner-purple.png" alt="JellyPy banner" style="width:100%;height:auto;border-radius:8px;margin-bottom:0px;">
         </div>
         <p>JellyPy automatically keeps your Sonarr and Radarr in sync with what you're actually watching in Jellyfin. Stop manually managing your media library. Watch an episode? It's automatically monitored. Finish a movie? It's automatically removed from your watchlist.</p>
-        <p><strong>License:</strong> GPLv3 | <strong>Requirements:</strong> Jellyfin 10.10+, .NET 8.0</p>
+        <p><strong>Version:</strong> v2.1.0.0 | <strong>License:</strong> GPLv3 | <strong>Requirements:</strong> Jellyfin 10.10.0+, Sonarr v3 API (optional), Radarr v3 API (optional)</p>
 
        <div class="features">
           <div class="feature">
@@ -62,9 +62,10 @@
           </div>
         </div>
         <nav class="nav" aria-label="Primary navigation">
-          <a href="https://github.com/caleb-venner/jellypy" target="_blank" rel="noopener">GitHub Repository</a>
-          <a href="https://github.com/caleb-venner/jellypy/issues" target="_blank" rel="noopener">Report Issues</a>
-          <a href="https://jellyfin.org/" target="_blank" rel="noopener">Jellyfin Project</a></li>
+          <a href="https://github.com/caleb-venner/JellyPy" target="_blank" rel="noopener">GitHub Repository</a>
+          <a href="https://github.com/caleb-venner/JellyPy/releases" target="_blank" rel="noopener">Latest Releases</a>
+          <a href="https://github.com/caleb-venner/JellyPy/issues" target="_blank" rel="noopener">Report Issues</a>
+          <a href="https://github.com/caleb-venner/JellyPy/blob/main/SCRIPT_EXECUTION.md" target="_blank" rel="noopener">Script Execution Guide</a>
         </nav>
       </section>
 
@@ -80,25 +81,64 @@
         </ol>
         
         <h3>Manual Installation</h3>
-        <p>Download the latest <code style="background: #f3f4f6; padding: 2px 6px; border-radius: 3px;">Jellyfin.Plugin.JellyPy.dll</code> from <a href="https://github.com/caleb-venner/jellypy/releases">Releases</a> and copy to your plugins directory:</p>
+        <p>Download the latest <code style="background: #f3f4f6; padding: 2px 6px; border-radius: 3px;">Jellyfin.Plugin.JellyPy.dll</code> from <a href="https://github.com/caleb-venner/JellyPy/releases">Releases</a> and copy to your plugins directory:</p>
         <ul>
           <li><strong>Linux:</strong> <code style="background: #f3f4f6; padding: 2px 6px; border-radius: 3px;">/var/lib/jellyfin/plugins/Jellypy/</code></li>
           <li><strong>Windows:</strong> <code style="background: #f3f4f6; padding: 2px 6px; border-radius: 3px;">C:\ProgramData\Jellyfin\Server\plugins\Jellypy\</code></li>
           <li><strong>Docker:</strong> <code style="background: #f3f4f6; padding: 2px 6px; border-radius: 3px;">/config/data/plugins/Jellypy/</code></li>
         </ul>
+        <p>Restart Jellyfin after installation.</p>
+        
+        <h3>Docker Installation with Script Execution Support</h3>
+        <p>For script execution features, use the <a href="https://hub.docker.com/r/linuxserver/jellyfin" target="_blank" rel="noopener">linuxserver.io Jellyfin image</a> with Python support enabled:</p>
+        <pre style="background: #1e293b; color: #e2e8f0; padding: 16px; border-radius: 6px; overflow-x: auto; font-size: 0.9rem;"><code>services:
+  jellyfin:
+    image: lscr.io/linuxserver/jellyfin:latest
+    container_name: jellyfin
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Australia/Sydney
+      - DOCKER_MODS=linuxserver/mods:universal-package-install
+      - INSTALL_PIP_PACKAGES=requests
+    volumes:
+      - /path/to/config:/config
+      - /path/to/media:/data
+    ports:
+      - 8096:8096
+    restart: unless-stopped</code></pre>
+        <p><strong>Note:</strong> The linuxserver.io image includes Python 3 by default. The <code>universal-package-install</code> mod enables pip package installation for custom scripts.</p>
       </section>
 
       <section class="card">
         <h2>Configuration</h2>
-        <p>JellyPy integrates into your Jellyfin dashboard. Configure:</p>
+        <p>JellyPy integrates into your Jellyfin dashboard. Navigate to <strong>Dashboard → Plugins → JellyPy → Settings</strong> to configure:</p>
+        
+        <h3>Sonarr Setup</h3>
         <ul>
-          <li>Sonarr API endpoint and key</li>
-          <li>Radarr API endpoint and key</li>
-          <li>Episode monitoring buffer</li>
-          <li>Movie watch percentage threshold</li>
-          <li>Custom event scripts (optional)</li>
+          <li><strong>Sonarr URL:</strong> e.g., <code>http://localhost:8989</code></li>
+          <li><strong>API Key:</strong> Found in Sonarr → Settings → General → Security</li>
+          <li><strong>Episodes to Monitor:</strong> Number of upcoming episodes to keep monitored</li>
+          <li><strong>Auto-Search Episodes:</strong> Trigger searches for monitored episodes</li>
+          <li><strong>Monitor Future Episodes:</strong> Auto-monitor when episodes become available</li>
+          <li><strong>Skip Episodes With Files:</strong> Don't re-monitor episodes with existing files</li>
+          <li><strong>Minimum Episode Buffer:</strong> Maintain minimum unwatched episode count</li>
         </ul>
-        <p>API keys are encrypted with AES-256 using your Jellyfin server's unique key—they're safe to store.</p>
+        
+        <h3>Radarr Setup</h3>
+        <ul>
+          <li><strong>Radarr URL:</strong> e.g., <code>http://localhost:7878</code></li>
+          <li><strong>API Key:</strong> Found in Radarr → Settings → General → Security</li>
+          <li><strong>Unmonitor Watched Movies:</strong> Set movies to unmonitored after watching</li>
+          <li><strong>Minimum Watch Percentage:</strong> Default 90% - consider movie "watched"</li>
+          <li><strong>Unmonitor After Quality Cutoff:</strong> Only unmonitor movies at quality target</li>
+        </ul>
+        
+        <h3>Security</h3>
+        <p>API keys are automatically encrypted with AES-256 using your Jellyfin server's unique key. The encryption is server-bound and survives OS updates, machine renames, and user changes. Use the <strong>Test Connection</strong> buttons to verify your settings.</p>
+        
+        <h3>Custom Scripts</h3>
+        <p>Execute Python scripts on Jellyfin events with flexible triggers and environment variables. See the <a href="https://github.com/caleb-venner/JellyPy/blob/main/SCRIPT_EXECUTION.md" target="_blank" rel="noopener">Script Execution Guide</a> for detailed usage.</p>
  
         <h2>Screenshots</h2>
         <div class="gallery">
@@ -118,6 +158,37 @@
         </div>
       </section>
 
+      <section class="card">
+        <h2>Troubleshooting</h2>
+        
+        <h3>Plugin Not Working</h3>
+        <ol>
+          <li>Check Jellyfin logs: <strong>Dashboard → Logs → Filter: "JellyPy"</strong></li>
+          <li>Verify API keys work in Sonarr/Radarr directly</li>
+          <li>Check network connectivity from Jellyfin server</li>
+          <li>Confirm integration is enabled in settings</li>
+          <li>Ensure URLs include <code>http://</code> or <code>https://</code></li>
+        </ol>
+        
+        <h3>Episodes Not Monitoring</h3>
+        <ul>
+          <li>Verify "Episodes to Monitor" > 0</li>
+          <li>Check "Skip Episodes With Files" setting</li>
+          <li>Ensure series exists in Sonarr</li>
+          <li>Review Sonarr logs for API errors</li>
+        </ul>
+        
+        <h3>Movies Not Unmonitoring</h3>
+        <ul>
+          <li>Verify "Unmonitor Watched Movies" is enabled</li>
+          <li>Check watch percentage in logs (must exceed threshold)</li>
+          <li>Confirm movie exists in Radarr</li>
+          <li>Review quality cutoff settings if enabled</li>
+        </ul>
+        
+        <h3>Enable Verbose Logging</h3>
+        <p>For detailed debugging information, enable verbose logging in <strong>Dashboard → Plugins → JellyPy → Global Settings</strong>.</p>
+      </section>
 
     </main>
 

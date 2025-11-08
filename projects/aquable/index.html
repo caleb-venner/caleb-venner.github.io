@@ -25,44 +25,62 @@
  
       <section class="card">
         <div class="project-banner">
-          <img src="/assets/projects/aquable/aquable-banner.png" alt="Aquable banner" style="width:100%;height:auto;border-radius:8px;margin-bottom:0px;">
+          <img src="/assets/projects/aquable/aquable-banner.png" alt="AquaBle banner" style="width:100%;height:auto;border-radius:8px;margin-bottom:0px;">
         </div>
-        <p>AquaBle is a lightweight Home Assistant add-on that gives you control over your Chihiros aquarium devices directly from the Home Assistant interface. Manage your LED lights, dosing pumps, and terrarium gear seamlessly with integrated Ingress support—no port forwarding or complex configuration needed.</p>
-        <p><strong>Status:</strong> In very active development at an early stage. Expect new features and refinements soon.</p>
+        <p><strong>AquaBle</strong> (pronounced "AK-wuh-bul" /ˈækwə//bəl/) is a lightweight Home Assistant add-on that gives you control over your Chihiros aquarium devices directly from the Home Assistant interface. Manage your LED lights, dosing pumps, and terrarium gear seamlessly with integrated Ingress support—no port forwarding or complex configuration needed.</p>
+        <p><strong>Status:</strong> In very active development at a very early stage. Expect new features and refinements soon.</p>
+        <p><strong>License:</strong> GPLv3 | <strong>Requirements:</strong> Home Assistant OS or Supervised, Python 3.10+</p>
+        
+        <div style="background: #fffbeb; border-left: 4px solid #f59e0b; padding: 12px 16px; margin: 16px 0; border-radius: 4px;">
+          <p style="margin: 0; font-size: 0.9rem;"><strong>Legal Disclaimer:</strong> This project is not affiliated with, endorsed by, or approved by Chihiros Aquatic Studio or Shanghai Ogino Biotechnology Co., Ltd. This is an independent, open-source software project developed through reverse engineering and community contributions. Use at your own risk.</p>
+        </div>
 
         <nav class="nav" aria-label="Primary navigation">
-          <a href="https://github.com/caleb-venner/aquable">GitHub Repository</a>
-          <a href="https://github.com/caleb-venner/aquable/issues">Report Issues</a>
+          <a href="https://github.com/caleb-venner/AquaBle" target="_blank" rel="noopener">GitHub Repository</a>
+          <a href="https://github.com/caleb-venner/AquaBle/issues" target="_blank" rel="noopener">Report Issues</a>
+          <a href="https://github.com/caleb-venner/AquaBle/blob/main/aquable/INGRESS.md" target="_blank" rel="noopener">Ingress Technical Details</a>
        </nav>
         <h2>Supported Devices</h2>
         <ul>
-          <li>Chihiros LED Aquarium Lights</li>
-          <li>Chihiros Dosing Pumps</li>
+          <li><strong>Chihiros LED Aquarium Lights</strong> - Control brightness, color temperature, and schedules</li>
+          <li><strong>Chihiros Dosing Pumps</strong> - Manage dosing schedules and calibration</li>
         </ul>
-  <p class="muted" style="font-size: 0.9rem; margin-top: 20px;">Built on the open-source <a href="https://github.com/TheMicDiet/chihiros-led-control" target="_blank" rel="noopener">Chihiros LED Control</a> project. Licensed under MIT.</p>
+        
+        <h2>Requirements</h2>
+        <ul>
+          <li>Home Assistant OS or Supervised installation</li>
+          <li>Bluetooth adapter with BLE (Bluetooth Low Energy) support</li>
+          <li>Compatible Chihiros device in pairing mode</li>
+          <li>Python 3.10 or higher (included in Home Assistant)</li>
+        </ul>
+  
+  <p class="muted" style="font-size: 0.9rem; margin-top: 20px;">Maintained by Caleb Venner. Built on the open-source <a href="https://github.com/TheMicDiet/chihiros-led-control" target="_blank" rel="noopener">Chihiros LED Control</a> project by Michael Dietrich. The original project is licensed under MIT; all redistributions continue to honour that license and retain the upstream attribution.</p>
       </section>
 
       <section class="card">
         <h2>Installation</h2>
-        <p>AquaBle is distributed as a Home Assistant add-on and is installed directly from a custom repository.</p>
+        <p>AquaBle is distributed as a Home Assistant add-on with Ingress support for seamless access.</p>
         
         <ol>
           <li>In Home Assistant, go to <strong>Settings → Add-ons & integrations → Add-ons</strong></li>
-          <li>Click the three-dot menu and select <strong>Repositories</strong></li>
-          <li>Add the custom repository: <code>https://github.com/caleb-venner/aquable</code></li>
+          <li>Click the three-dot menu (⋮) and select <strong>Repositories</strong></li>
+          <li>Add the custom repository: <code>https://github.com/caleb-venner/AquaBle</code></li>
           <li>Go to the <strong>Add-ons store</strong> and search for <strong>AquaBle</strong></li>
           <li>Click <strong>Install</strong> and then <strong>Start</strong></li>
           <li>Click <strong>OPEN WEB UI</strong> to access the interface via Home Assistant Ingress</li>
         </ol>
         
+        <p><strong>Note:</strong> Ensure your Home Assistant host has a working Bluetooth adapter with BLE support and the necessary permissions before installation.</p>
+        
         <h3>Home Assistant Ingress</h3>
-        <p>AquaBle is built for Home Assistant Ingress integration:</p>
+        <p>AquaBle is designed exclusively for Home Assistant Ingress:</p>
         <ul>
-          <li>Access the web interface directly through the Home Assistant UI</li>
-          <li>No port forwarding or authentication configuration needed</li>
-          <li>Seamless user experience within Home Assistant</li>
-          <li>Works perfectly on Home Assistant mobile apps</li>
+          <li><strong>Direct Access:</strong> Interface accessible through the Home Assistant UI</li>
+          <li><strong>Zero Configuration:</strong> No port forwarding or authentication setup required</li>
+          <li><strong>Seamless Integration:</strong> Feels like a native Home Assistant feature</li>
+          <li><strong>Mobile Ready:</strong> Works perfectly on Home Assistant mobile apps</li>
         </ul>
+        <p>For technical implementation details, see the <a href="https://github.com/caleb-venner/AquaBle/blob/main/aquable/INGRESS.md" target="_blank" rel="noopener">Ingress documentation</a>.</p>
       </section>
 
       <section class="card">
