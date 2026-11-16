@@ -3,14 +3,14 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Caleb Venner — Software developer</title>
-    <meta name="description" content="Portfolio of Caleb Venner — software developer focused on web apps, tooling and UX.">
-    <meta property="og:title" content="Caleb Venner — Software developer">
-    <meta property="og:description" content="Portfolio of Caleb Venner — software developer focused on web apps, tooling and UX.">
+    <title>Caleb Venner — Embedded systems and firmware</title>
+    <meta name="description" content="Portfolio of Caleb Venner, a final-year software engineering student at UTS building embedded systems and firmware in C on the ESP32.">
+    <meta property="og:title" content="Caleb Venner — Embedded systems and firmware">
+    <meta property="og:description" content="Final-year software engineering student at UTS building embedded systems and firmware in C on the ESP32.">
     <meta property="og:type" content="website">
     <meta name="twitter:card" content="summary">
     <link rel="canonical" href="https://caleb-venner.github.io/">
-    <meta name="keywords" content="Jellyfin, Sonarr, Radarr, Jellypy, aquarium, Chihiros, BLE, Home Assistant, FastAPI, Docker, .NET">
+    <meta name="keywords" content="embedded systems, firmware, C, ESP32, ESP-IDF, FreeRTOS, Bluetooth LE, reverse engineering, Chihiros, Home Assistant, UTS">
     <!-- JSON-LD structured data for the site and featured projects -->
     <script type="application/ld+json">
     {
@@ -18,104 +18,125 @@
       "@type": "Person",
       "name": "Caleb Venner",
       "url": "https://caleb-venner.github.io/",
-      "jobTitle": "Software Developer",
+      "jobTitle": "Software Engineering Student",
+      "alumniOf": {
+        "@type": "CollegeOrUniversity",
+        "name": "University of Technology Sydney"
+      },
       "sameAs": [
-        "https://github.com/caleb-venner"
+        "https://github.com/caleb-venner",
+        "https://www.linkedin.com/in/caleb-venner/"
       ],
-      "knowsAbout": ["Jellyfin","Sonarr","Radarr","Bluetooth LE","Docker","FastAPI",".NET"],
+      "knowsAbout": ["Embedded systems","Firmware","C","ESP32","ESP-IDF","FreeRTOS","Bluetooth LE","Python","C#"],
       "hasPart": [
+        {
+          "@type": "SoftwareApplication",
+          "name": "Chihiros ESP32 LED Controller",
+          "url": "https://github.com/caleb-venner/chihiros-esp32-controller",
+          "description": "ESP32-S3 replacement controller for a Chihiros aquarium light's LED driver board, with ESP-IDF firmware and a Wi-Fi REST API.",
+          "programmingLanguage": "C"
+        },
+        {
+          "@type": "SoftwareApplication",
+          "name": "AquaBle",
+          "url": "https://github.com/caleb-venner/AquaBle",
+          "description": "Home Assistant custom component that controls Chihiros aquarium lights and dosers over Bluetooth LE.",
+          "programmingLanguage": "Python"
+        },
         {
           "@type": "SoftwareApplication",
           "name": "JellyPy",
           "url": "https://github.com/caleb-venner/JellyPy",
           "description": "Event-driven plugin for Jellyfin integrating with Sonarr and Radarr.",
           "programmingLanguage": "C#"
-        },
-        {
-          "@type": "SoftwareApplication",
-          "name": "AquaBle",
-          "url": "https://github.com/caleb-venner/AquaBle",
-          "description": "Full-stack Home Assistant Add-on for controlling aquarium hardware via Bluetooth LE; integrates with home automation.",
-          "programmingLanguage": "Python"
         }
       ]
     }
     </script>
-  <link rel="stylesheet" href="/assets/style.css?v=20251016-1">
+  <link rel="stylesheet" href="/assets/style.css?v=20261116-5">
     <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
   </head>
   <body>
-    <header class="site-header">
-      <div class="container">
-        <h1 class="name">Caleb Venner</h1>
-        <p class="tagline">Software developer — web apps, tooling, and clear UX</p>
-        <nav class="nav" aria-label="Primary navigation">
+    <main class="article home">
+
+      <header class="home-header">
+        <h1>Caleb Venner</h1>
+        <p class="article-dek">Software engineering student building embedded systems and firmware.</p>
+        <nav class="home-links" aria-label="Primary navigation">
           <a href="https://github.com/caleb-venner" target="_blank" rel="noopener">GitHub</a>
           <a href="https://www.linkedin.com/in/caleb-venner/" target="_blank" rel="noopener">LinkedIn</a>
         </nav>
+      </header>
+
+      <div class="article-body">
+        <section id="about">
+          <h2>About</h2>
+          <p>I'm a final-year Bachelor of Engineering (Honours) in Software student at the University of Technology Sydney, finishing in mid-2027 with a High Distinction average and Dean's List recognition. I'm most interested in embedded systems and firmware: working out how a piece of hardware actually works, then writing the code that runs closest to it.</p>
+          <p>My recent work includes reverse-engineering an aquarium light's LED driver board and replacing its Bluetooth controller with an ESP32-S3 running my own ESP-IDF firmware in C. Before that, I built a Home Assistant integration that talks to the same light's stock firmware over Bluetooth LE.</p>
+          <p>I'm looking for a junior embedded or firmware engineering role with a smaller, focused team from mid-2027, and I'm open to casual or part-time work in the meantime.</p>
+        </section>
+
+        <section id="projects">
+          <h2>Projects</h2>
+          <ul class="home-projects">
+            <li>
+              <a href="/projects/chihiros-esp32/">
+                <img src="/assets/projects/chihiros-esp32/icon.jpg" alt="" width="72" height="72">
+                <div>
+                  <h3>Chihiros ESP32 LED Controller</h3>
+                  <p>Reverse-engineered an aquarium light's LED driver board and replaced its Bluetooth controller with an ESP32-S3 running my own firmware.</p>
+                  <p class="home-tags">C · ESP-IDF · FreeRTOS · ESP32-S3</p>
+                </div>
+              </a>
+            </li>
+            <li>
+              <a href="/projects/aquable/">
+                <img src="/assets/projects/aquable/aquable-icon.png" alt="" width="72" height="72">
+                <div>
+                  <h3>AquaBle</h3>
+                  <p>Home Assistant integration that speaks the Bluetooth LE protocol of Chihiros lights and dosing pumps, with custom dashboard cards for schedules, dosing and manual control.</p>
+                  <p class="home-tags">Python · JavaScript · Bluetooth LE · Home Assistant</p>
+                </div>
+              </a>
+            </li>
+            <li>
+              <a href="/projects/jellypy/">
+                <img src="/assets/projects/jellypy/jellypy-icon-purple.png" alt="" width="72" height="72">
+                <div>
+                  <h3>JellyPy</h3>
+                  <p>Jellyfin plugin that keeps Sonarr and Radarr in sync with what's being watched, with ntfy.sh notifications and event-driven scripts.</p>
+                  <p class="home-tags">C# · .NET · Docker</p>
+                </div>
+              </a>
+            </li>
+          </ul>
+        </section>
+
+        <section id="experience">
+          <h2>Experience</h2>
+          <h3>Software Engineering Intern, Honeywell Software Centre</h3>
+          <p class="home-tags">Sydney · 12 weeks</p>
+          <p>I developed a C# backend service to migrate a cloud-hosted dashboard platform to a fully on-premises solution for secure building management systems. The project involved interfacing with existing WCF APIs, deciphering frontend JSON payload requirements, and building efficient data aggregation pipelines.</p>
+          <p>To handle increasing data loads and improve response times, I moved the architecture from on-the-fly processing to PostgreSQL, using Marten for database-side filtering.</p>
+        </section>
+
+        <section id="skills">
+          <h2>Skills</h2>
+          <dl class="skills">
+            <dt>Embedded</dt>
+            <dd>C · C++ · ESP-IDF · FreeRTOS · PlatformIO · ESP32-S3 · PWM · Bluetooth LE · Hardware reverse-engineering</dd>
+            <dt>Software</dt>
+            <dd>Python · C# / .NET · Java · JavaScript · TypeScript · PostgreSQL</dd>
+            <dt>Tools</dt>
+            <dd>Git · Docker · Home Assistant</dd>
+          </dl>
+        </section>
       </div>
-    </header>
 
-
-    
-    <main class="container">
-
-      <section id="about" class="card">
-        <h2>About</h2>
-        <p>I am a final-year Bachelor of Engineering (Honours) in Software student at the University of Technology Sydney, with a strong focus on Mathematics. My interest in engineering stems from a natural curiosity to understand how things work and a strong passion for problem-solving.</p>
-        <p>I am motivated by creating reliable, data-driven applications and improving developer experiences through containerisation. I am currently seeking a junior software engineering role where I can apply my practical experience in scalable backend architecture.</p>
-        <p class="muted">Skills: Python · Java · C++ · C · C# · JavaScript · TypeScript · Docker · Data-driven applications</p>
-      </section>
-      <section id="recent-work" class="card">
-        <h2>Recent Work</h2>
-        <p><strong>Internship:</strong> I recently completed a 12-week software engineering internship at Honeywell Software Centre in Sydney.</p>
-        <p>During my internship I developed a C# backend service to migrate a cloud-hosted dashboard platform to a fully on-premises solution for secure building management systems. The project involved interfacing with existing WCF APIs, deciphering frontend JSON payload requirements, and building efficient data aggregation pipelines.</p>
-        <p>To handle increasing data loads and improve response times, I optimised the architecture by transitioning from on-the-fly processing to PostgreSQL using Marten for database-side filtering. This experience solidified my practical understanding of scalable architecture, separation of concerns, and strongly typed data processing.</p>
-
-        
-      </section>
-
-
-
-      <section id="projects" class="card">
-        <h2>Projects</h2>
-        <p class="muted">A quick snapshot of what each project currently focuses on.</p>
-        <ul class="projects">
-          <li><strong>JellyPy:</strong> Jellyfin automation plugin in C#/.NET with Sonarr and Radarr sync, ntfy.sh notifications, and event-driven scripting.</li>
-          <li><strong>AquaBle:</strong> Python Home Assistant custom component for Chihiros BLE devices with HACS workflows, dosing management, and lighting controls.</li>
-        </ul>
-        <p class="muted">Explore my projects and detailed setup guides, including self-hosting instructions and integration examples.</p>
-        <div class="project-list">
-          <a href="/projects/jellypy/" class="project-link">
-            <article class="project project-item">
-              <img class="project-icon-inline" src="/assets/projects/jellypy/jellypy-icon-purple.png" alt="JellyPy icon">
-              <div class="project-meta">
-                <h3>JellyPy</h3>
-                <p class="muted small">Jellyfin plugin — Sonarr & Radarr integration · C# · Docker</p>
-              </div>
-            </article>
-          </a>
-
-
-
-          <a href="/projects/aquable/" class="project-link">
-            <article class="project project-item">
-              <img class="project-icon-inline" src="/assets/projects/aquable/aquable-icon.png" alt="Aquable icon">
-              <div class="project-meta">
-                <h3>AquaBle</h3>
-                <p class="muted small">Home Assistant add-on — Chihiros devices · Python · Ingress</p>
-              </div>
-            </article>
-          </a>
-        </div>
-      </section>
-
-
-    <footer class="site-footer">
-      <div class="container">
-        <p>© <span id="year"></span> Caleb Venner — <a href="https://pages.github.com/" target="_blank" rel="noopener">GitHub Pages</a></p>
-      </div>
-    </footer>
+      <footer class="article-footer home-footer">
+        <span>© <span id="year"></span> Caleb Venner</span>
+      </footer>
+    </main>
 
     <script>
       document.getElementById('year').textContent = new Date().getFullYear();

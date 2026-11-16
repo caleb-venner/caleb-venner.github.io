@@ -3,142 +3,74 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>AquaBle — Home Assistant BLE Component</title>
-    <meta name="description" content="AquaBle is a Python Home Assistant custom component for Chihiros BLE devices, with HACS integration, dosing management, and lighting control.">
-    <meta property="og:title" content="AquaBle — Home Assistant BLE Component">
-    <meta property="og:description" content="Python Home Assistant custom component for Chihiros BLE devices with HACS integration, doser workflows, and lighting controls.">
-    <meta property="og:type" content="website">
+    <title>AquaBle: Chihiros aquarium devices in Home Assistant — Caleb Venner</title>
+    <meta name="description" content="AquaBle is a Home Assistant integration that controls Chihiros aquarium lights and dosing pumps over Bluetooth LE, with custom dashboard cards for schedules, dosing and manual control.">
+    <meta property="og:title" content="AquaBle: Chihiros aquarium devices in Home Assistant">
+    <meta property="og:description" content="A Home Assistant integration that controls Chihiros aquarium lights and dosing pumps over Bluetooth LE, with custom dashboard cards.">
+    <meta property="og:type" content="article">
+    <meta property="og:image" content="https://caleb-venner.github.io/assets/projects/aquable/cards-overview.png">
     <link rel="canonical" href="https://caleb-venner.github.io/projects/aquable/">
-  <link rel="stylesheet" href="/assets/style.css?v=20251016-1">
+    <link rel="stylesheet" href="/assets/style.css?v=20261116-5">
     <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
   </head>
   <body>
-    <header class="site-header">
-      <div class="container">
-  <a class="back-link" href="/">← Back</a>
-        <h1 style="margin: 0; font-size: 2.25rem;">AquaBle</h1>
-        <p class="tagline">A concise overview of current capabilities and progress</p>
+    <main class="article">
+      <a class="article-back" href="/">← Caleb Venner</a>
+
+      <header class="article-header">
+        <p class="article-kicker">Python · JavaScript · Bluetooth LE · Home Assistant</p>
+        <h1>AquaBle: Chihiros aquarium devices in Home Assistant</h1>
+        <p class="article-dek">A Home Assistant integration that speaks the Bluetooth LE protocol of Chihiros lights and dosing pumps, with its own dashboard cards to schedule, monitor and control them, so the vendor's phone app is no longer needed.</p>
+        <p class="article-byline">Caleb Venner · v4.1.0 · MIT · <a href="https://github.com/caleb-venner/AquaBle" target="_blank" rel="noopener">Code on GitHub</a></p>
+      </header>
+
+      <figure class="article-hero">
+        <img src="/assets/projects/aquable/cards-overview.png" alt="Two AquaBle dashboard cards side by side: a dosing pump card showing four pump heads with daily progress bars, and a light card showing a 24-hour ramp curve and two configured schedule slots" width="1800" height="1580">
+        <figcaption>The doser and light cards on a Home Assistant dashboard.</figcaption>
+      </figure>
+
+      <div class="article-body">
+        <p>Chihiros make aquarium lights and dosing pumps that are controlled through the vendor's phone app over Bluetooth. That keeps them separate from the rest of a home automation setup: no shared dashboards, no automations, and no way to tie them into anything else.</p>
+        <p>AquaBle is a Home Assistant integration that talks to the devices directly over Bluetooth LE. It has grown into a full replacement for the app, covering more than a dozen light models and the four-head dosing pump.</p>
+
+        <h2>Talking to the hardware</h2>
+        <p>Chihiros devices use a Nordic UART service over BLE, with a small binary framing protocol on top: a preamble, a command ID, a message ID, the parameters and an XOR checksum. AquaBle encodes and decodes those frames itself, and identifies each model from its advertised Bluetooth name.</p>
+        <p>The foundation for this came from Michael Dietrich's open-source <a href="https://github.com/TheMicDiet/chihiros-led-control" target="_blank" rel="noopener">Chihiros LED Control</a>, which had already worked out how to drive the lights. I built on that work, extending it to the dosing pump and a wider range of light models using captured Bluetooth packet traces and analysis of the official apps. That added the eight-step sequence the doser expects when a schedule is configured, and the telemetry packets that report each pump head's mode, schedule, dosed volume and lifetime total. Everything is written up in the repository's <a href="https://github.com/caleb-venner/AquaBle/blob/main/BLE_Protocol.md" target="_blank" rel="noopener">protocol notes</a>.</p>
+        <p>The integration uses Home Assistant's own Bluetooth stack, so it works through local adapters or ESPHome Bluetooth proxies anywhere in the house, and reconnects automatically.</p>
+
+        <h2>Treating devices as configuration, not switches</h2>
+        <p>Home Assistant tends to model everything as entities you turn on and off. Aquarium equipment doesn't work that way: the light and the pumps run their own schedules on their own microcontrollers, and only need to be told what to do. So AquaBle treats them as configuration targets.</p>
+        <p>Schedules are stored in Home Assistant as the source of truth and pushed to the hardware, which then runs them on its own. Telemetry comes back as ordinary sensors, so dosing volumes and schedules can drive automations like anything else. The light's live channel brightness is calculated locally by interpolating its schedule, which keeps sensors updating every second without polling the light over Bluetooth.</p>
+
+        <h2>Dashboard cards</h2>
+        <p>To replace the app properly, AquaBle ships two custom Lovelace cards, written in JavaScript and CSS and registered automatically when the integration is installed.</p>
+        <p>The <strong>light card</strong> draws a 24-hour ramp profile as an SVG curve for every colour channel, with a marker for the current time. Schedule slots can be added, clicked to edit, or deleted, each with its own dawn and dusk times, ramp duration, active weekdays and peak level per channel. A manual tab switches between auto, manual and off, with sliders for each channel.</p>
+        <p>The <strong>doser card</strong> shows each of the four pump heads with today's dosed volume against its daily target. Heads can be switched on or off, dosed by hand in steps as small as 0.1&nbsp;mL, and given a daily target, run time and set of weekdays.</p>
+
+        <div class="figure-pair no-crop">
+          <figure>
+            <img src="/assets/projects/aquable/cards-light_edit-schedule.png" alt="The AquaBle light card editing a schedule slot, with dawn and dusk times, a ramp duration slider, weekday toggles and peak level sliders for red, green, blue and white" loading="lazy" width="892" height="1048">
+            <figcaption>Editing a light schedule slot.</figcaption>
+          </figure>
+          <figure>
+            <img src="/assets/projects/aquable/cards-doser_head.png" alt="The AquaBle doser card configuring pump head 2, with a daily target dose, a dosing time and weekday toggles" loading="lazy" width="854" height="785">
+            <figcaption>Setting a pump head's daily dose.</figcaption>
+          </figure>
+        </div>
+
+        <p>The latest release adds <strong>light sync</strong>: one light can act as a master, and its schedules and commands are mirrored to other lights of the same model.</p>
+
+        <h2>Where it led</h2>
+        <p>Working at the protocol level also showed the limits of the approach. AquaBle can only do what the factory controller allows, over a Bluetooth link to firmware I can't see inside. That's what led to my <a href="/projects/chihiros-esp32/">ESP32 controller</a>, where I replaced the light's controller entirely.</p>
+
+        <p class="article-disclaimer">This project is not affiliated with, endorsed by, or approved by Chihiros Aquatic Studio or Shanghai Ogino Biotechnology Co., Ltd. It is an independent, open-source project developed through reverse engineering and community contributions. Use at your own risk. AquaBle is built on the open-source <a href="https://github.com/TheMicDiet/chihiros-led-control" target="_blank" rel="noopener">Chihiros LED Control</a> project by Michael Dietrich, which is licensed under MIT; all redistributions honour that licence and retain the upstream attribution.</p>
       </div>
-    </header>
 
-    <main class="container">
- 
-      <section class="card">
-        <div class="project-banner">
-          <img src="/assets/projects/aquable/aquable-banner.png" alt="AquaBle banner" style="width:100%;height:auto;border-radius:8px;margin-bottom:0px;">
-        </div>
-        <p><strong>AquaBle</strong> is a Python-based Home Assistant custom component for controlling Chihiros aquarium devices over Bluetooth Low Energy (BLE). The focus is practical local control with clear workflows for everyday device management.</p>
-        <p><strong>Status:</strong> Active development | <strong>License:</strong> GPLv3 | <strong>Stack:</strong> Python, Home Assistant, BLE</p>
-
-        <h2>Highlights</h2>
-        <div class="deployment-options">
-          <div class="option">
-            <h3>Native Home Assistant Fit</h3>
-            <p>Distributed through HACS-compatible workflows for straightforward installation and updates.</p>
-            <p>Automatic BLE device discovery reduces manual setup effort.</p>
-          </div>
-          <div class="option">
-            <h3>Doser Management</h3>
-            <p>Tracks daily dosing volume and lifetime usage.</p>
-            <p>Supports schedule-based dosing setup for repeatable routines.</p>
-          </div>
-          <div class="option">
-            <h3>Lighting Control</h3>
-            <p>Per-channel brightness control for compatible lights.</p>
-            <p>Switches between automatic and manual modes based on preference.</p>
-          </div>
-        </div>
-        
-        <div style="background: #fffbeb; border-left: 4px solid #f59e0b; padding: 12px 16px; margin: 16px 0; border-radius: 4px;">
-          <p style="margin: 0; font-size: 0.9rem;"><strong>Legal Disclaimer:</strong> This project is not affiliated with, endorsed by, or approved by Chihiros Aquatic Studio or Shanghai Ogino Biotechnology Co., Ltd. This is an independent, open-source software project developed through reverse engineering and community contributions. Use at your own risk.</p>
-        </div>
-
-        <nav class="nav" aria-label="Primary navigation">
-          <a href="https://github.com/caleb-venner/AquaBle" target="_blank" rel="noopener">GitHub Repository</a>
-          <a href="https://github.com/caleb-venner/AquaBle/issues" target="_blank" rel="noopener">Report Issues</a>
-          <a href="https://github.com/caleb-venner/AquaBle/blob/main/aquable/INGRESS.md" target="_blank" rel="noopener">Ingress Technical Details</a>
-       </nav>
-        <h2>Supported Device Types</h2>
-        <ul>
-          <li><strong>Chihiros LED Lights:</strong> Brightness and mode controls</li>
-          <li><strong>Chihiros Dosing Pumps:</strong> Scheduling and usage tracking</li>
-        </ul>
-        
-        <h2>Requirements</h2>
-        <ul>
-          <li>Home Assistant OS or Supervised installation</li>
-          <li>Bluetooth adapter with BLE (Bluetooth Low Energy) support</li>
-          <li>Compatible Chihiros device in pairing mode</li>
-          <li>Python 3.10 or higher (included in Home Assistant)</li>
-        </ul>
-  
-  <p class="muted" style="font-size: 0.9rem; margin-top: 20px;">Maintained by Caleb Venner. Built on the open-source <a href="https://github.com/TheMicDiet/chihiros-led-control" target="_blank" rel="noopener">Chihiros LED Control</a> project by Michael Dietrich. The original project is licensed under MIT; all redistributions continue to honour that license and retain the upstream attribution.</p>
-      </section>
-
-      <section class="card">
-        <h2>Quick Start</h2>
-        <p>For concise setup, add the AquaBle repository in Home Assistant and install via the standard custom component flow. Full steps, compatibility notes, and configuration details are maintained in the repository documentation.</p>
-        <ol>
-          <li>Add AquaBle repository in Home Assistant</li>
-          <li>Install the integration and pair compatible BLE devices</li>
-          <li>Configure dosing and lighting behavior from the dashboard</li>
-        </ol>
-        <p class="muted">Detailed deployment and configuration notes are available in the AquaBle repository documentation.</p>
-      </section>
-
-      <!-- <section class="card">
-        <h2>Screenshots.</h2>
-        <h3>Note: from deprecated ingress version of service</h3>
-        <div class="gallery">
-          <img src="/assets/projects/aquable/aquable-dashboard-overview.png" alt="Dashboard" style="max-width: 100%; height: auto; border-radius: 6px; margin-bottom: 12px;">
-          <img src="/assets/projects/aquable/aquable-dashboard-overview-dark.png" alt="Dashboard Darkmode" style="max-width: 100%; height: auto; border-radius: 6px; margin-bottom: 12px;">
-          <img src="/assets/projects/aquable/aquable-settings-doser-head.png" alt="Doser head settings" style="max-width: 100%; height: auto; border-radius: 6px; margin-bottom: 12px;">
-          <div class="side-by-side">
-            <img src="/assets/projects/aquable/aquable-settings-light-auto.png" alt="Light settings - Auto" style="max-width: 100%; height: auto; border-radius: 6px;">
-            <img src="/assets/projects/aquable/aquable-settings-light-manual.png" alt="Light settings - Manual" style="max-width: 100%; height: auto; border-radius: 6px;">
-          </div>
-        </div>
-      </section> -->
+      <footer class="article-footer">
+        <a href="https://github.com/caleb-venner/AquaBle" target="_blank" rel="noopener">View the code on GitHub</a>
+        <a href="https://github.com/caleb-venner/AquaBle/blob/main/BLE_Protocol.md" target="_blank" rel="noopener">Protocol notes</a>
+        <a href="/">More projects</a>
+      </footer>
     </main>
-
-    <footer class="site-footer">
-      <div class="container">
-        <p>&copy; 2025 Caleb Venner</p>
-      </div>
-    </footer>
-
-    <style>
-      .deployment-options {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 16px;
-        margin: 16px 0;
-      }
-      .option {
-        padding: 16px;
-        border: 1px solid var(--border);
-        border-radius: 8px;
-        background: #f9fafb;
-      }
-      .option h3 {
-        margin-top: 0;
-        margin-bottom: 8px;
-      }
-      .option p {
-        margin: 6px 0;
-        font-size: 0.95rem;
-      }
-      .side-by-side {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 12px;
-        margin-bottom: 12px;
-      }
-      @media (max-width: 768px) {
-        .side-by-side {
-          grid-template-columns: 1fr;
-        }
-      }
-    </style>
   </body>
 </html>

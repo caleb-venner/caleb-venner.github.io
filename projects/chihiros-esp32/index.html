@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Replacing an aquarium light's Bluetooth controller with an ESP32 — Caleb Venner</title>
+    <meta name="description" content="How I reverse-engineered the LED driver board in a Chihiros WRGB II Pro aquarium light and replaced its Bluetooth controller with an ESP32-S3 running my own ESP-IDF firmware in C.">
+    <meta property="og:title" content="Replacing an aquarium light's Bluetooth controller with an ESP32">
+    <meta property="og:description" content="Reverse-engineering an aquarium light's LED driver board and replacing its controller with an ESP32-S3 running ESP-IDF firmware in C.">
+    <meta property="og:type" content="article">
+    <meta property="og:image" content="https://caleb-venner.github.io/assets/projects/chihiros-esp32/driver-board-top.jpg">
+    <link rel="canonical" href="https://caleb-venner.github.io/projects/chihiros-esp32/">
+    <link rel="stylesheet" href="/assets/style.css?v=20261116-5">
+    <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  </head>
+  <body>
+    <main class="article">
+      <a class="article-back" href="/">← Caleb Venner</a>
+
+      <header class="article-header">
+        <p class="article-kicker">Embedded firmware · Hardware reverse-engineering</p>
+        <h1>Replacing an aquarium light's Bluetooth controller with an ESP32</h1>
+        <p class="article-dek">The light could only be controlled from the vendor's phone app. I traced its LED driver board, pulled out the factory Bluetooth module, and wrote ESP-IDF firmware in C to drive it myself.</p>
+        <p class="article-byline">Caleb Venner · November 2026 · <a href="https://github.com/caleb-venner/chihiros-esp32-controller" target="_blank" rel="noopener">Code on GitHub</a></p>
+      </header>
+
+      <figure class="article-hero">
+        <img src="/assets/projects/chihiros-esp32/controller-in-housing.jpg" alt="An open project box containing the light's original driver board, with an ESP32-S3 and a buck converter module on perfboard mounted beneath it" width="1600" height="1200">
+        <figcaption>The finished controller, mounted in a project box.</figcaption>
+      </figure>
+
+      <div class="article-body">
+        <p>The Chihiros WRGB II Pro is a four-channel aquarium light, with red, green, blue and white LED strings. Out of the box, the only way to control it is the vendor's phone app over Bluetooth.</p>
+        <p>My first attempt at fixing that was <a href="/projects/aquable/">AquaBle</a>, a Home Assistant integration that speaks the factory controller's Bluetooth protocol. It works, but it still depends on a Bluetooth link to a closed controller I can't see inside. What I really wanted was the light on my network as a device I fully understood, with its daily schedule running on the device itself.</p>
+        <p>That turned a protocol problem into a hardware one. I needed to find the signals the factory controller uses to drive the LEDs, then produce them from my own board without damaging the light. The controller has now been running the light on my tank for a couple of months.</p>
+
+        <h2>Opening it up</h2>
+        <p>Chihiros publish no schematic, so I had to build one up from the board itself. The factory controller turned out to be a small daughterboard carrying a Nordic nRF52832, which plugs into the driver board through two 10-pin headers.</p>
+
+        <figure>
+          <img src="/assets/projects/chihiros-esp32/driver-board-top.jpg" alt="The LED driver board of a Chihiros WRGB II Pro aquarium light, removed from its housing" loading="lazy" width="1600" height="1200">
+          <figcaption>The LED driver board from a Chihiros WRGB II Pro, out of its housing.</figcaption>
+        </figure>
+
+        <div class="figure-pair">
+          <figure>
+            <img src="/assets/projects/chihiros-esp32/nrf52832-daughterboard.jpg" alt="The factory Bluetooth module: a small board carrying a Nordic nRF52832 and two 10-pin headers" loading="lazy" width="1600" height="1200">
+            <figcaption>The factory controller, an nRF52832 module on two 10-pin headers.</figcaption>
+          </figure>
+          <figure>
+            <img src="/assets/projects/chihiros-esp32/driver-board-headers.jpg" alt="Underside of the driver board showing the two header sockets the Bluetooth module plugs into" loading="lazy" width="1200" height="1600">
+            <figcaption>The J1 and J2 sockets on the driver board.</figcaption>
+          </figure>
+        </div>
+
+        <p>I started by mapping each header pin back to the nRF52832 by continuity. That quickly separated power, ground and the SWD debug pins from everything else.</p>
+        <p>Next I identified the driver ICs from their markings. Red and green each use a PT4121 constant-current controller switching an external MOSFET. Blue and white each use an MK4025, which has its switch built in.</p>
+        <p>Then I traced each control line from a header pin, through a series resistor of about 200&nbsp;Ω, to a driver's dimming input. Of the twenty header pins, only four turned out to matter.</p>
+
+        <table>
+          <thead>
+            <tr><th>Channel</th><th>Header pin</th><th>Driver</th><th>ESP32-S3 GPIO</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Red</td><td>J1.2</td><td>PT4121 + MOSFET</td><td>11</td></tr>
+            <tr><td>Green</td><td>J1.1</td><td>PT4121 + MOSFET</td><td>7</td></tr>
+            <tr><td>Blue</td><td>J1.10</td><td>MK4025</td><td>9</td></tr>
+            <tr><td>White</td><td>J1.5</td><td>MK4025</td><td>13</td></tr>
+          </tbody>
+        </table>
+
+        <p>Before connecting anything, I checked that the signals would actually be compatible. The PT4121 datasheet specifies PWM dimming from 100&nbsp;Hz to 20&nbsp;kHz with a logic-high threshold of 2.5&nbsp;V, so a 3.3&nbsp;V GPIO at 1&nbsp;kHz can drive it directly with no level shifting. The MK4025 has no public datasheet, so I treated blue and white as the riskier pair until I'd seen them dim in proportion to the duty cycle.</p>
+        <p>The full pinout, component list and measurements are in the repository's <a href="https://github.com/caleb-venner/chihiros-esp32-controller/blob/main/HARDWARE.md" target="_blank" rel="noopener">hardware notes</a>.</p>
+
+        <h2>The new design</h2>
+        <p>The plan was to leave as much of the original light alone as possible. The driver board keeps its own current regulation, and the ESP32-S3 only decides each channel's duty cycle.</p>
+
+        <div class="diagram" role="img" aria-label="Block diagram: a 36 volt supply feeds the LED driver board and a buck converter. The buck converter powers an ESP32-S3 at 5 volts. A Wi-Fi client sends JSON over HTTP to the ESP32, which sends four PWM signals through the J1 header to the driver board, which drives the four LED strings.">
+          <div class="d-row">
+            <div class="d-box">36&nbsp;V supply</div>
+            <div class="d-arrow">→</div>
+            <div class="d-box">Buck converter<br><small>36&nbsp;V to 5&nbsp;V</small></div>
+            <div class="d-arrow">→</div>
+            <div class="d-box d-accent">ESP32-S3<br><small>ESP-IDF firmware</small></div>
+            <div class="d-arrow">←<br><small>HTTP / JSON</small></div>
+            <div class="d-box">Wi-Fi client</div>
+          </div>
+          <div class="d-down">↓ <small>4 × PWM through the J1 header</small></div>
+          <div class="d-row">
+            <div class="d-box">36&nbsp;V supply</div>
+            <div class="d-arrow">→</div>
+            <div class="d-box d-accent">LED driver board<br><small>one constant-current driver per channel</small></div>
+            <div class="d-arrow">→</div>
+            <div class="d-box">R / G / B / W<br><small>LED strings</small></div>
+          </div>
+        </div>
+
+        <figure>
+          <img src="/assets/projects/chihiros-esp32/controller-out-of-housing.jpg" alt="The finished controller out of its project box: a perfboard carrying a buck converter module and an ESP32-S3, mounted under the driver board and wired to its header" loading="lazy" width="1600" height="1200">
+          <figcaption>The build out of its project box. The perfboard carries the buck converter and the ESP32-S3, with jumper wires to the driver board's header.</figcaption>
+        </figure>
+
+        <p>Getting there meant solving three problems, none of which were obvious from the outside.</p>
+
+        <h3>The board can't power an ESP32</h3>
+        <p>The obvious move was to power the ESP32 from the 3.3&nbsp;V pin that used to feed the Bluetooth module. Tracing that rail showed a buck converter stepping 36&nbsp;V down to about 5&nbsp;V, followed by a small linear regulator sized for a module drawing around 15&nbsp;mA. An ESP32 with Wi-Fi active peaks at several hundred milliamps, which that regulator can neither supply nor dissipate. So the ESP32 gets its own buck converter from the 36&nbsp;V input, with a shared ground.</p>
+
+        <figure class="figure-narrow">
+          <img src="/assets/projects/chihiros-esp32/buck-and-esp32-closeup.jpg" alt="Close-up of the perfboard: an LM2596 adjustable buck converter module on the left and an ESP32-S3 board on the right" loading="lazy" width="1200" height="1600">
+          <figcaption>An LM2596 buck module (left) steps the 36&nbsp;V input down for the ESP32-S3 (right).</figcaption>
+        </figure>
+
+        <h3>Full brightness would overload the power supply</h3>
+        <p>The vendor app lets each channel go up to "140&nbsp;%". Using the per-channel voltage and current figures from the app's power profile, all four channels at 140&nbsp;% come to about 187&nbsp;W of LED load. The power supply is rated for 127&nbsp;W. The app gets away with this by keeping a software power budget.</p>
+        <p>Full-scale PWM corresponds to that 140&nbsp;% point, so rather than reimplementing the budget, I capped the firmware. 100&nbsp;% in my API maps to 100/140 of full duty, about 71&nbsp;%, and at that cap every channel at 100&nbsp;% together comes to about 120&nbsp;W. The limit holds for any combination of requests, and there's no budgeting logic to get wrong.</p>
+
+        <h3>The LEDs flashed at power-on</h3>
+        <p>Some ESP32 pins are driven or pulled during boot, which would flash the light at full brightness for a moment every time it started. The four outputs avoid the ESP32-S3's strapping pins and use pins that stay low through the bootloader. The PWM channels are also set to 0&nbsp;% before the network or the scheduler start.</p>
+
+
+        <h2>The firmware</h2>
+        <p>The firmware is about 700 lines of C on ESP-IDF, built with PlatformIO. I kept it as small modules that each do one job.</p>
+        <p>The <strong>LED driver</strong> sets up four LEDC PWM channels at 1&nbsp;kHz and 13-bit resolution. Every request goes through a single function that scales and caps the duty, so nothing else in the code can push a channel past the safe limit.</p>
+        <p>The <strong>scheduler</strong> is a FreeRTOS task. It either holds a manual colour or interpolates between up to 24 daily keyframes, including across midnight. Time comes from SNTP, and the light stays dark until the clock is valid rather than guessing.</p>
+        <p>The <strong>REST API</strong> has JSON endpoints to read the current state, set a colour, or upload a schedule. Input is range-checked as it comes in, and the schedule is saved to NVS so it survives a power cut. A daily schedule looks like this:</p>
+
+<pre><code>curl -X POST -H "Content-Type: application/json" -d '{
+  "mode": "auto",
+  "keyframes": [
+    { "time_min": 780,  "r": 0,  "g": 0,  "b": 0,  "w": 0 },
+    { "time_min": 810,  "r": 40, "g": 20, "b": 45, "w": 25 },
+    { "time_min": 1230, "r": 40, "g": 20, "b": 45, "w": 25 },
+    { "time_min": 1320, "r": 0,  "g": 0,  "b": 0,  "w": 0 }
+  ]
+}' http://192.168.1.50/api/state</code></pre>
+        <p class="article-note">Ramp up over 30 minutes from 13:00, hold, then fade out by 22:00.</p>
+
+        <p>For <strong>reliability</strong>, a task watchdog reboots the chip if the main loop hangs, and the outputs come back up at 0&nbsp;%. Firmware updates go over the air into a two-slot partition layout, so I never have to open the light again to change the code.</p>
+
+        <h2>Where it stands</h2>
+        <p>The controller has run the light on my tank every day for a couple of months, with no factory module installed. Four-channel PWM with the duty cap, manual and scheduled modes, persistence across power cuts, network time, watchdog recovery and over-the-air updates all work.</p>
+        <p>It has known limits. The API has no authentication, so it belongs on a trusted network. Wi-Fi credentials are compiled in. Scheduled fades step in whole percentages rather than using the PWM's full 13-bit resolution, so long fades at low brightness move in small discrete steps.</p>
+        <p>Next, I want to replace the perfboard, buck module and jumper wires with a single PCB that has its own 36&nbsp;V buck converter and plugs straight into the J1 and J2 headers. That should be small enough to fit back inside the light's original housing, so the whole thing goes back together like a factory part.</p>
+
+        <p class="article-disclaimer">This project is not affiliated with, endorsed by, or approved by Chihiros Aquatic Studio or Shanghai Ogino Biotechnology Co., Ltd. It is an independent project based on measurements of hardware I own, and it contains no vendor firmware. Modifying the product is done at your own risk.</p>
+      </div>
+
+      <footer class="article-footer">
+        <a href="https://github.com/caleb-venner/chihiros-esp32-controller" target="_blank" rel="noopener">View the code on GitHub</a>
+        <a href="/">More projects</a>
+      </footer>
+    </main>
+  </body>
+</html>

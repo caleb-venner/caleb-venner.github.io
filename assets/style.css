@@ -69,3 +69,100 @@ a:hover{opacity:0.85}
 .back-link{position:absolute;left:0;top:50%;transform:translateY(-50%);color:var(--text);text-decoration:none;padding:6px 8px;border-radius:6px;font-weight:600}
 .back-link:hover{opacity:0.85}
 
+
+/* Grouped skills list */
+.skills{display:grid;grid-template-columns:max-content 1fr;gap:10px 20px;margin:0}
+.skills dt{font-weight:600}
+.skills dd{margin:0;color:var(--muted)}
+@media (max-width:560px){
+  .skills{grid-template-columns:1fr;gap:2px}
+  .skills dd{margin-bottom:10px}
+}
+
+/* One-line summary on project cards */
+.project-summary{margin:8px 0 6px;line-height:1.5}
+
+/* Phone widths: less nested padding so project cards aren't cramped */
+@media (max-width:560px){
+  .container{padding:20px 16px}
+  .site-header{margin-top:48px}
+  .card{padding:20px}
+  .project-item{padding:14px;gap:14px;align-items:flex-start}
+  .project h3{font-size:1.25rem}
+  .project-icon-inline{width:56px;height:56px}
+}
+
+/* ---------- Long-form write-up pages (.article) ---------- */
+.article{max-width:700px;margin:0 auto;padding:40px 20px 64px;font-size:1.0625rem;line-height:1.7}
+.article-back{display:inline-block;color:var(--muted);font-weight:600;font-size:0.95rem;margin-bottom:40px}
+.article-header{margin-bottom:28px}
+.article-kicker{color:var(--accent);font-weight:600;font-size:0.85rem;letter-spacing:0.02em;text-transform:uppercase;margin:0 0 10px}
+.article h1{font-size:2.4rem;line-height:1.15;letter-spacing:-0.02em;margin:0 0 14px}
+.article-dek{font-size:1.2rem;line-height:1.5;color:var(--muted);margin:0 0 18px}
+.article-byline{font-size:0.9rem;color:var(--muted);margin:0;padding-top:16px;border-top:1px solid var(--border)}
+.article figure{margin:28px 0}
+.article figure img{width:100%;height:auto;display:block;border-radius:8px}
+.article figcaption{font-size:0.85rem;color:var(--muted);margin-top:8px;line-height:1.4;text-align:center}
+.article-hero{margin:0 0 36px}
+.article-body h2{font-size:1.6rem;line-height:1.25;letter-spacing:-0.01em;margin:48px 0 12px}
+.article-body h3{font-size:1.2rem;margin:32px 0 8px}
+.article-body p{margin:0 0 18px}
+.figure-pair{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:28px 0}
+.figure-pair figure{margin:0}
+.figure-pair img{aspect-ratio:4/3;object-fit:cover}
+.article table{width:100%;border-collapse:collapse;margin:24px 0;font-size:0.95rem}
+.article th,.article td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--border)}
+.article th{color:var(--muted);font-weight:600;font-size:0.85rem}
+.article pre{background:#0f172a;color:#e2e8f0;padding:16px 18px;border-radius:8px;overflow-x:auto;font-size:0.85rem;line-height:1.5;margin:24px 0 8px}
+.article code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.article-note{font-size:0.9rem;color:var(--muted)}
+.article-disclaimer{font-size:0.85rem;color:var(--muted);margin-top:40px !important;padding-top:16px;border-top:1px solid var(--border)}
+.article-footer{display:flex;gap:24px;flex-wrap:wrap;margin-top:32px;font-weight:600}
+
+/* Simple block diagram */
+.diagram{border:1px solid var(--border);border-radius:8px;background:#f9fafb;padding:18px 14px;margin:24px 0;text-align:center;line-height:1.3}
+.d-row{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:6px}
+.d-box{border:1px solid #cbd5e1;border-radius:8px;background:#fff;padding:8px 10px;font-weight:600;font-size:0.85rem}
+.d-box small,.d-arrow small,.d-down small{font-weight:400;color:var(--muted);font-size:0.78rem}
+.d-accent{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
+.d-arrow{color:var(--muted);font-size:1.2rem;line-height:1.1}
+.d-down{margin:10px 0;color:var(--muted);font-size:1.2rem}
+
+@media (max-width:600px){
+  .article{padding:24px 16px 48px;font-size:1rem}
+  .article-back{margin-bottom:24px}
+  .article h1{font-size:1.85rem}
+  .article-dek{font-size:1.08rem}
+  .article-body h2{font-size:1.4rem;margin-top:40px}
+  .figure-pair{grid-template-columns:1fr}
+  .d-row{flex-direction:column}
+  .d-arrow{transform:rotate(90deg)}
+  .d-arrow small{display:none}
+}
+
+/* ---------- Homepage in the plain .article layout ---------- */
+.home-header{margin:24px 0 8px}
+.home .home-header h1{font-size:2.6rem;margin:0 0 10px}
+.home-links{display:flex;gap:20px;font-weight:600;font-size:0.95rem;padding-top:14px;border-top:1px solid var(--border)}
+.home .article-body h2{font-size:1.35rem;margin:44px 0 12px}
+.home .article-body h3{margin:0 0 4px;font-size:1.1rem}
+.home-tags{font-size:0.88rem;color:var(--muted);margin:4px 0 0 !important}
+.home-projects{list-style:none;margin:0;padding:0}
+.home-projects li{border-bottom:1px solid var(--border)}
+.home-projects li:first-child{border-top:1px solid var(--border)}
+.home-projects a{display:flex;gap:18px;align-items:flex-start;padding:18px 0;color:inherit}
+.home-projects a:hover{opacity:1}
+.home-projects a:hover h3{color:var(--accent)}
+.home-projects img{width:72px;height:72px;flex:none;object-fit:cover;border-radius:10px;border:1px solid var(--border)}
+.home-projects p{margin:0}
+.home-projects h3{transition:color 0.15s ease}
+.home .skills{font-size:0.98rem}
+.home-footer{font-weight:400;color:var(--muted);font-size:0.9rem;margin-top:48px;padding-top:16px;border-top:1px solid var(--border)}
+@media (max-width:600px){
+  .home .home-header h1{font-size:2.1rem}
+  .home-projects a{gap:14px}
+  .home-projects img{width:56px;height:56px}
+}
+#experience .home-tags{margin-bottom:14px !important}
+.article figure.figure-narrow{max-width:420px;margin-left:auto;margin-right:auto}
+.figure-pair.no-crop img{aspect-ratio:auto;object-fit:contain}
