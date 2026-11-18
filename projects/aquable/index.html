@@ -10,7 +10,7 @@
     <meta property="og:type" content="article">
     <meta property="og:image" content="https://caleb-venner.github.io/assets/projects/aquable/cards-overview.png">
     <link rel="canonical" href="https://caleb-venner.github.io/projects/aquable/">
-    <link rel="stylesheet" href="/assets/style.css?v=20261116-6">
+    <link rel="stylesheet" href="/assets/style.css?v=20261118-2">
     <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
   </head>
   <body>
@@ -35,7 +35,7 @@
 
         <h2>Talking to the hardware</h2>
         <p>Chihiros devices use a Nordic UART service over BLE, with a small binary framing protocol on top: a preamble, a command ID, a message ID, the parameters and an XOR checksum. AquaBle encodes and decodes those frames itself, and identifies each model from its advertised Bluetooth name.</p>
-        <p>The foundation for this came from Michael Dietrich's open-source <a href="https://github.com/TheMicDiet/chihiros-led-control" target="_blank" rel="noopener">Chihiros LED Control</a>, which had already worked out how to drive the lights. I built on that work, extending it to the dosing pump and a wider range of light models using captured Bluetooth packet traces and analysis of the official apps. That added the eight-step sequence the doser expects when a schedule is configured, and the telemetry packets that report each pump head's mode, schedule, dosed volume and lifetime total. Everything is written up in the repository's <a href="https://github.com/caleb-venner/AquaBle/blob/main/BLE_Protocol.md" target="_blank" rel="noopener">protocol notes</a>.</p>
+        <p>The foundation for this came from Michael Dietrich's open-source <a href="https://github.com/TheMicDiet/chihiros-led-control" target="_blank" rel="noopener">Chihiros LED Control</a> project, which had already worked out how to drive the lights. I built on that work, extending it to the dosing pump and a wider range of light models using captured Bluetooth packet traces and analysis of the official apps. That work added the eight-step sequence the doser expects when a schedule is configured, and the telemetry packets that report each pump head's mode, schedule, dosed volume and lifetime total. Everything is written up in the repository's <a href="https://github.com/caleb-venner/AquaBle/blob/main/BLE_Protocol.md" target="_blank" rel="noopener">protocol notes</a>.</p>
         <p>The integration uses Home Assistant's own Bluetooth stack, so it works through local adapters or ESPHome Bluetooth proxies anywhere in the house, and reconnects automatically.</p>
 
         <h2>Treating devices as configuration, not switches</h2>
@@ -44,7 +44,7 @@
 
         <h2>Dashboard cards</h2>
         <p>To replace the app properly, AquaBle ships two custom Lovelace cards, written in JavaScript and CSS and registered automatically when the integration is installed.</p>
-        <p>The <strong>light card</strong> draws a 24-hour ramp profile as an SVG curve for every colour channel, with a marker for the current time. Schedule slots can be added, clicked to edit, or deleted, each with its own dawn and dusk times, ramp duration, active weekdays and peak level per channel. A manual tab switches between auto, manual and off, with sliders for each channel.</p>
+        <p>The <strong>light card</strong> draws a 24-hour ramp profile as an SVG curve for every colour channel, with a marker for the current time. Schedule slots can be added, edited or deleted, each with its own dawn and dusk times, ramp duration, active weekdays and peak level per channel. A manual tab switches between auto, manual and off, with sliders for each channel.</p>
         <p>The <strong>doser card</strong> shows each of the four pump heads with today's dosed volume against its daily target. Heads can be switched on or off, dosed by hand in steps as small as 0.1&nbsp;mL, and given a daily target, run time and set of weekdays.</p>
 
         <div class="figure-pair no-crop">
@@ -63,7 +63,7 @@
         <h2>Where it led</h2>
         <p>Working at the protocol level also showed the limits of the approach. AquaBle can only do what the factory controller allows, over a Bluetooth link to firmware I can't see inside. That's what led to my <a href="/projects/chihiros-esp32/">ESP32 controller</a>, where I replaced the light's controller entirely.</p>
 
-        <p class="article-disclaimer">This project is not affiliated with, endorsed by, or approved by Chihiros Aquatic Studio or Shanghai Ogino Biotechnology Co., Ltd. It is an independent, open-source project developed through reverse engineering and community contributions. Use at your own risk. AquaBle is built on the open-source <a href="https://github.com/TheMicDiet/chihiros-led-control" target="_blank" rel="noopener">Chihiros LED Control</a> project by Michael Dietrich, which is licensed under MIT; all redistributions honour that licence and retain the upstream attribution.</p>
+        <p class="article-disclaimer">This project is not affiliated with, endorsed by, or approved by Chihiros Aquatic Studio or Shanghai Ogino Biotechnology Co., Ltd. It is an independent, open-source project developed through reverse engineering and community contributions. Use at your own risk. AquaBle is built on the open-source <a href="https://github.com/TheMicDiet/chihiros-led-control" target="_blank" rel="noopener">Chihiros LED Control</a> project by Michael Dietrich, which is released under the MIT licence; all redistributions honour that licence and retain the upstream attribution.</p>
       </div>
 
       <footer class="article-footer">

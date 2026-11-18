@@ -167,3 +167,15 @@ a:hover{opacity:0.85}
 #experience .home-tags{margin-bottom:14px !important}
 .article figure.figure-narrow{max-width:420px;margin-left:auto;margin-right:auto}
 .figure-pair.no-crop img{aspect-ratio:auto;object-fit:contain}
+
+/* Figure floated beside a run of paragraphs */
+.article figure.figure-float{float:right;width:44%;margin:6px 0 16px 24px}
+.article figure.figure-float img{aspect-ratio:1/1;object-fit:cover;object-position:68% 76%}
+.article table,.article-body h2,.article-body h3{clear:both}
+@media (max-width:600px){
+  .article figure.figure-float{float:none;width:100%;margin:24px 0}
+}
+.article figure.figure-crop img{aspect-ratio:3/2;object-fit:cover;object-position:60% 72%}
+.figure-pair.square img{aspect-ratio:1/1;object-fit:cover}
+.figure-pair img.crop-probing{object-position:68% 76%}
+@media (max-width:600px){.figure-pair.square{grid-template-columns:1fr 1fr}}

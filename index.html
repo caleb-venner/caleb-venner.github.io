@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Caleb Venner — Embedded systems and firmware</title>
-    <meta name="description" content="Portfolio of Caleb Venner, a final-year software engineering student at UTS building embedded systems and firmware in C on the ESP32.">
+    <meta name="description" content="Portfolio of Caleb Venner, a final-year software engineering student at UTS building embedded systems and firmware in C on the ESP32, available for junior embedded, firmware and systems roles.">
     <meta property="og:title" content="Caleb Venner — Embedded systems and firmware">
     <meta property="og:description" content="Final-year software engineering student at UTS building embedded systems and firmware in C on the ESP32.">
     <meta property="og:type" content="website">
@@ -53,7 +53,7 @@
       ]
     }
     </script>
-  <link rel="stylesheet" href="/assets/style.css?v=20261116-6">
+  <link rel="stylesheet" href="/assets/style.css?v=20261118-2">
     <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
   </head>
   <body>
@@ -71,9 +71,9 @@
       <div class="article-body">
         <section id="about">
           <h2>About</h2>
-          <p>I'm a final-year Bachelor of Engineering (Honours) in Software student at the University of Technology Sydney, finishing in mid-2027 with a High Distinction average and Dean's List recognition. I'm most interested in embedded systems and firmware: working out how a piece of hardware actually works, then writing the code that runs closest to it.</p>
-          <p>My recent work includes reverse-engineering an aquarium light's LED driver board and replacing its Bluetooth controller with an ESP32-S3 running my own ESP-IDF firmware in C. Before that, I built a Home Assistant integration that talks to the same light's stock firmware over Bluetooth LE.</p>
-          <p>I'm looking for a junior embedded or firmware engineering role with a smaller, focused team from mid-2027, and I'm open to casual or part-time work in the meantime.</p>
+          <p>I'm in the final year of a Bachelor of Engineering (Honours) in Software Engineering at the University of Technology Sydney, with a High Distinction average and Dean's List recognition in 2024 and 2025. I'm most interested in embedded systems and firmware: working out how a piece of hardware actually works, then writing the code that runs closest to it.</p>
+          <p>My recent work includes reverse-engineering an aquarium light's LED driver board and replacing its Bluetooth controller with an ESP32-S3 running my own ESP-IDF firmware in C. Before that, I built a Home Assistant integration that talks to the same light's stock firmware over Bluetooth LE. At home I also run a Linux homelab on Proxmox and Raspberry Pi, deployed from Git.</p>
+          <p>I'm looking for a junior embedded, firmware or systems engineering role, and I'm available to start full-time now. My degree formally completes in mid-2027, but the one remaining subject has no set class times.</p>
         </section>
 
         <section id="projects">
@@ -114,21 +114,27 @@
 
         <section id="experience">
           <h2>Experience</h2>
+          <h3>Industry Project (UTS), StevTech</h3>
+          <p class="home-tags">Mar 2026 to May 2026</p>
+          <p>I developed the core Python ingestion pipeline that standardises imagery and telemetry from four drone payloads into one schema, which StevTech integrated into their own. I extended it with GNSS post-processing, validated the corrected camera positions against onboard logs, contributed to the testing and handover documentation, and presented the work to StevTech.</p>
+
           <h3>Software Engineering Intern, Honeywell Software Centre</h3>
-          <p class="home-tags">Sydney · 12 weeks</p>
-          <p>I developed a C# backend service to migrate a cloud-hosted dashboard platform to a fully on-premises solution for secure building management systems. The project involved interfacing with existing WCF APIs, deciphering frontend JSON payload requirements, and building efficient data aggregation pipelines.</p>
-          <p>To handle increasing data loads and improve response times, I moved the architecture from on-the-fly processing to PostgreSQL, using Marten for database-side filtering.</p>
+          <p class="home-tags">Sydney · Nov 2025 to Feb 2026 (12 weeks)</p>
+          <p>I built a C#/.NET backend that migrated a cloud-based single-page application for building management systems to a standalone, on-premises product. That meant reverse-engineering API payloads and relational data from WCF services and SPARQL databases.</p>
+          <p>I also designed the PostgreSQL and Marten database layer, moving filtering and aggregation onto the database server to handle growing data loads. The team worked in Agile sprints, using Git, Jira and Confluence.</p>
         </section>
 
         <section id="skills">
           <h2>Skills</h2>
           <dl class="skills">
             <dt>Embedded</dt>
-            <dd>C · C++ · ESP-IDF · FreeRTOS · PlatformIO · ESP32-S3 · PWM · Bluetooth LE · Hardware reverse-engineering</dd>
+            <dd>C · ESP-IDF · FreeRTOS · PlatformIO · ESP32-S3 · Arduino · PWM · UART · Bluetooth LE</dd>
+            <dt>Hardware</dt>
+            <dd>Soldering · Multimeter testing · Reading datasheets · PCB tracing · Hardware reverse-engineering</dd>
             <dt>Software</dt>
-            <dd>Python · C# / .NET · Java · JavaScript · TypeScript · PostgreSQL</dd>
-            <dt>Tools</dt>
-            <dd>Git · Docker · Home Assistant</dd>
+            <dd>Python · C++ · C# / .NET · Java · JavaScript · SQL · PostgreSQL</dd>
+            <dt>Systems and tools</dt>
+            <dd>Linux · Proxmox · Docker · Nix · Git · Jira · Confluence · Home Assistant</dd>
           </dl>
         </section>
       </div>

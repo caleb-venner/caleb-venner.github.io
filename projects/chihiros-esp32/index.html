@@ -10,7 +10,7 @@
     <meta property="og:type" content="article">
     <meta property="og:image" content="https://caleb-venner.github.io/assets/projects/chihiros-esp32/driver-board-top.jpg">
     <link rel="canonical" href="https://caleb-venner.github.io/projects/chihiros-esp32/">
-    <link rel="stylesheet" href="/assets/style.css?v=20261116-6">
+    <link rel="stylesheet" href="/assets/style.css?v=20261118-2">
     <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
   </head>
   <body>
@@ -32,7 +32,7 @@
       <div class="article-body">
         <p>The Chihiros WRGB II Pro is a four-channel aquarium light, with red, green, blue and white LED strings. Out of the box, the only way to control it is the vendor's phone app over Bluetooth.</p>
         <p>My first attempt at fixing that was <a href="/projects/aquable/">AquaBle</a>, a Home Assistant integration that speaks the factory controller's Bluetooth protocol. It works, but it still depends on a Bluetooth link to a closed controller I can't see inside. What I really wanted was the light on my network as a device I fully understood, with its daily schedule running on the device itself.</p>
-        <p>That turned a protocol problem into a hardware one. I needed to find the signals the factory controller uses to drive the LEDs, then produce them from my own board without damaging the light. The controller has now been running the light on my tank for a couple of months.</p>
+        <p>That turned a protocol problem into a hardware one. I needed to find the signals the factory controller uses to drive the LEDs, then produce them from my own board without damaging the light.</p>
 
         <h2>Opening it up</h2>
         <p>Chihiros publish no schematic, so I had to build one up from the board itself. The factory controller turned out to be a small daughterboard carrying a Nordic nRF52832, which plugs into the driver board through two 10-pin headers.</p>
@@ -42,18 +42,24 @@
           <figcaption>The LED driver board from a Chihiros WRGB II Pro, out of its housing.</figcaption>
         </figure>
 
-        <div class="figure-pair">
+        <figure>
+          <img src="/assets/projects/chihiros-esp32/driver-board-headers.jpg" alt="The other side of the driver board, showing the J1 and J2 header sockets the Bluetooth module plugs into" loading="lazy" width="1600" height="1200">
+          <figcaption>The other side, with the J1 and J2 sockets the Bluetooth module plugs into.</figcaption>
+        </figure>
+
+        <p>I started by mapping each header pin back to the nRF52832 by continuity. That quickly separated power, ground and the SWD debug pins from everything else.</p>
+
+        <div class="figure-pair square">
           <figure>
             <img src="/assets/projects/chihiros-esp32/nrf52832-daughterboard.jpg" alt="The factory Bluetooth module: a small board carrying a Nordic nRF52832 and two 10-pin headers" loading="lazy" width="1600" height="1200">
             <figcaption>The factory controller, an nRF52832 module on two 10-pin headers.</figcaption>
           </figure>
           <figure>
-            <img src="/assets/projects/chihiros-esp32/driver-board-headers.jpg" alt="Underside of the driver board showing the two header sockets the Bluetooth module plugs into" loading="lazy" width="1200" height="1600">
-            <figcaption>The J1 and J2 sockets on the driver board.</figcaption>
+            <img class="crop-probing" src="/assets/projects/chihiros-esp32/daughterboard-probing.jpg" alt="Test clips attached to the header pins of the nRF52832 module while its pins are mapped" loading="lazy" width="1200" height="1600">
+            <figcaption>Clipped onto its header to map the pins.</figcaption>
           </figure>
         </div>
 
-        <p>I started by mapping each header pin back to the nRF52832 by continuity. That quickly separated power, ground and the SWD debug pins from everything else.</p>
         <p>Next I identified the driver ICs from their markings. Red and green each use a PT4121 constant-current controller switching an external MOSFET. Blue and white each use an MK4025, which has its switch built in.</p>
         <p>Then I traced each control line from a header pin, through a series resistor of about 200&nbsp;Ω, to a driver's dimming input. Of the twenty header pins, only four turned out to matter.</p>
 
@@ -111,15 +117,15 @@
         </figure>
 
         <h3>Full brightness would overload the power supply</h3>
-        <p>The vendor app lets each channel go up to "140&nbsp;%". Using the per-channel voltage and current figures from the app's power profile, all four channels at 140&nbsp;% come to about 187&nbsp;W of LED load. The power supply is rated for 127&nbsp;W. The app gets away with this by keeping a software power budget.</p>
-        <p>Full-scale PWM corresponds to that 140&nbsp;% point, so rather than reimplementing the budget, I capped the firmware. 100&nbsp;% in my API maps to 100/140 of full duty, about 71&nbsp;%, and at that cap every channel at 100&nbsp;% together comes to about 120&nbsp;W. The limit holds for any combination of requests, and there's no budgeting logic to get wrong.</p>
+        <p>The vendor app lets each channel go up to "140%". Using the per-channel voltage and current figures from the app's power profile, all four channels at 140% come to about 187&nbsp;W of LED load. The power supply is rated for 127&nbsp;W. The app gets away with this by keeping a software power budget.</p>
+        <p>Full-scale PWM corresponds to that 140% point, so rather than reimplementing the budget, I capped the firmware. In my API, 100% maps to 100/140 of full duty, about 71%, and at that cap every channel at 100% together comes to about 120&nbsp;W. The limit holds for any combination of requests, and there's no budgeting logic to get wrong.</p>
 
         <h3>The LEDs flashed at power-on</h3>
-        <p>Some ESP32 pins are driven or pulled during boot, which would flash the light at full brightness for a moment every time it started. The four outputs avoid the ESP32-S3's strapping pins and use pins that stay low through the bootloader. The PWM channels are also set to 0&nbsp;% before the network or the scheduler start.</p>
+        <p>Some ESP32 pins are driven or pulled during boot, which would flash the light at full brightness for a moment every time it started. The four outputs avoid the ESP32-S3's strapping pins and use pins that stay low through the bootloader. The PWM channels are also set to 0% before the network or the scheduler starts.</p>
 
 
         <h2>The firmware</h2>
-        <p>The firmware is about 700 lines of C on ESP-IDF, built with PlatformIO. I kept it as small modules that each do one job.</p>
+        <p>The firmware is about 700 lines of C on ESP-IDF, built with PlatformIO. I split it into small modules that each do one job.</p>
         <p>The <strong>LED driver</strong> sets up four LEDC PWM channels at 1&nbsp;kHz and 13-bit resolution. Every request goes through a single function that scales and caps the duty, so nothing else in the code can push a channel past the safe limit.</p>
         <p>The <strong>scheduler</strong> is a FreeRTOS task. It either holds a manual colour or interpolates between up to 24 daily keyframes, including across midnight. Time comes from SNTP, and the light stays dark until the clock is valid rather than guessing.</p>
         <p>The <strong>REST API</strong> has JSON endpoints to read the current state, set a colour, or upload a schedule. Input is range-checked as it comes in, and the schedule is saved to NVS so it survives a power cut. A daily schedule looks like this:</p>
@@ -135,14 +141,14 @@
 }' http://192.168.1.50/api/state</code></pre>
         <p class="article-note">Ramp up over 30 minutes from 13:00, hold, then fade out by 22:00.</p>
 
-        <p>For <strong>reliability</strong>, a task watchdog reboots the chip if the main loop hangs, and the outputs come back up at 0&nbsp;%. Firmware updates go over the air into a two-slot partition layout, so I never have to open the light again to change the code.</p>
+        <p>For <strong>reliability</strong>, a task watchdog reboots the chip if the main loop hangs, and the outputs restart at 0%. Firmware updates go over the air into a two-slot partition layout, so I never have to open the light again to change the code.</p>
 
         <h2>Where it stands</h2>
-        <p>The controller has run the light on my tank every day for a couple of months, with no factory module installed. Four-channel PWM with the duty cap, manual and scheduled modes, persistence across power cuts, network time, watchdog recovery and over-the-air updates all work.</p>
+        <p>The controller has run the light on my tank every day for a couple of months, with the factory module removed. Four-channel PWM with the duty cap, manual and scheduled modes, persistence across power cuts, network time, watchdog recovery and over-the-air updates all work.</p>
         <p>It has known limits. The API has no authentication, so it belongs on a trusted network. Wi-Fi credentials are compiled in. Scheduled fades step in whole percentages rather than using the PWM's full 13-bit resolution, so long fades at low brightness move in small discrete steps.</p>
         <p>Next, I want to replace the perfboard, buck module and jumper wires with a single PCB that has its own 36&nbsp;V buck converter and plugs straight into the J1 and J2 headers. That should be small enough to fit back inside the light's original housing, so the whole thing goes back together like a factory part.</p>
 
-        <p class="article-disclaimer">This project is not affiliated with, endorsed by, or approved by Chihiros Aquatic Studio or Shanghai Ogino Biotechnology Co., Ltd. It is an independent project based on measurements of hardware I own, and it contains no vendor firmware. Modifying the product is done at your own risk.</p>
+        <p class="article-disclaimer">This project is not affiliated with, endorsed by, or approved by Chihiros Aquatic Studio or Shanghai Ogino Biotechnology Co., Ltd. It is an independent project based on measurements of hardware I own, and it contains no vendor firmware. Modify the product at your own risk.</p>
       </div>
 
       <footer class="article-footer">

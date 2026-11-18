@@ -10,7 +10,7 @@
     <meta property="og:type" content="article">
     <meta property="og:image" content="https://caleb-venner.github.io/assets/projects/jellypy/jellypy-banner-purple.png">
     <link rel="canonical" href="https://caleb-venner.github.io/projects/jellypy/">
-    <link rel="stylesheet" href="/assets/style.css?v=20261116-6">
+    <link rel="stylesheet" href="/assets/style.css?v=20261118-2">
     <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
   </head>
   <body>
@@ -30,11 +30,11 @@
 
       <div class="article-body">
         <p>Jellyfin serves a media library, while Sonarr and Radarr manage what gets downloaded into it. On their own, they don't know what anyone is actually watching, so keeping them in step means a steady stream of repetitive library admin.</p>
-        <p>JellyPy is a Jellyfin plugin, written in C# on .NET against the Jellyfin plugin API, that closes that gap. The aim is to cut down that admin while keeping the plugin's behaviour transparent and configurable.</p>
+        <p>JellyPy is a Jellyfin plugin, written in C# on .NET against the Jellyfin plugin API, that closes the gap. The aim is to cut that admin down while keeping the plugin's behaviour transparent and configurable.</p>
 
         <h2>How it works</h2>
         <h3>Media sync</h3>
-        <p>As media is watched, JellyPy automatically monitors upcoming episodes in Sonarr and unmonitors watched media in Radarr. That keeps the download queues focused on what's actually being watched.</p>
+        <p>As you watch, JellyPy automatically monitors upcoming episodes in Sonarr and unmonitors watched media in Radarr. That keeps the download queues focused on what you're actually watching.</p>
 
         <h3>Notifications</h3>
         <p>JellyPy has native <a href="https://ntfy.sh" target="_blank" rel="noopener">ntfy.sh</a> integration for push notifications, with grouped updates and media image previews. That makes it easy to see what the automation is doing without opening a dashboard.</p>
